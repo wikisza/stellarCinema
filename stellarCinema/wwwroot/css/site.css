@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,100..900&family=Outfit:wght@100..900&display=swap');
+
+:root {
+    --bodyFont: 'Outfit', sans-serif;
+    --headerFont: 'Big Shoulders', sans-serif;
+    --sand: #EAE2B7;
+    --yellow: #FCBF49;
+    --orange: #F77F00;
+    --red: #D62828;
+    --darkblue: #003049;
+}
+
+body {
+    font-family: var(--bodyFont);
+    background: #222;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.container{
+    margin:0;
+    padding:0;
+    
+}
+
+header {
+    background: #e6d8a3;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header a{
+    text-decoration:none;
+    color:var(--darkblue);
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.login {
+    background: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #333;
+}
+
+.slide{
+    display:flex;
+    margin-left:0.5rem;
+    margin-right:0.5rem;
+}
+
+.desc-bar{
+    display:flex;
+}
+
+.movie-photo {
+    width: 38vw;
+    height: 30vh;
+    background: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movie-description {
+    width: 38vw;
+    height: 30vh;
+    background: #888;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.buy, .more {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.buy {
+    background: red;
+    color: white;
+}
+
+.more {
+    background: white;
+    color: black;
+}
+
+.repertoire {
+    background: #e6d8a3;
+    padding: 20px;
+}
+
+.tabs button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.tabs .active {
+    border-bottom: 2px solid orange;
+}
+
+.movies {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,33 @@
+﻿@{
+	ViewData["Title"] = "Repertuar";
+}
+
+<section class="slider">
+	<button class="prev">&#x25C0;</button>
+	<div class="slide">
+		<div class="movie-photo">movie photo</div>
+		<div class="movie-description">
+			<p>movie description</p>
+			<div class="desc-bar">
+				<button class="buy">Kup bilety</button>
+				<button class="more">Pokaż więcej</button>
+			</div>
+		</div>
+	</div>
+	<button class="next">&#x25B6;</button>
+</section>
+
+<section class="repertoire">
+	<div class="tabs">
+		<button class="active" data-tab="now">Na ekranie</button>
+		<button data-tab="soon">Wkrótce</button>
+	</div>
+	<div class="movies" id="now">
+		<div class="movie">Film 1<br>120 min | Akcja<br><button>Zobacz godziny</button></div>
+		<div class="movie">Film 2<br>90 min | Komedia<br><button>Zobacz godziny</button></div>
+	</div>
+	<div class="movies hidden" id="soon">
+		<div class="movie">Film 3<br>110 min | Thriller<br><button>Zobacz godziny</button></div>
+		<div class="movie">Film 4<br>130 min | Dramat<br><button>Zobacz godziny</button></div>
+	</div>
+</section>
