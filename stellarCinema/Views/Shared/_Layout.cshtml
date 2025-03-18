@@ -15,9 +15,13 @@
             <a asp-area="" asp-controller="Home" asp-action="Index">REPERTUAR</a>
             <a asp-area="" asp-controller="Movies" asp-action="Index">FILMY</a>
         </nav>
-		@if (Context.User.Identity.Name != "recepcionist")
+		@if (User.IsInRole("recepcionist"))
         {
-
+			<a asp-area="" asp-controller="Home" asp-action="EmployeePanel">Panel pracownika</a>
+        }
+		@if (Context.User.Identity.Name == "admin")
+        {
+			<a asp-area="" asp-controller="Account" asp-action="Index">Panel admina</a>
         }
         ﻿@if (Context.User.Identity.Name != null)
         {

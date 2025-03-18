@@ -18,6 +18,11 @@ namespace stellarCinema.Controllers
             return View();
         }
 
+        public IActionResult EmployeePanel()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

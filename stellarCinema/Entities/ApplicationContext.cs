@@ -58,5 +58,6 @@ namespace stellarCinema.Entities
                 .WithOne(r => r.Payment)
                 .HasForeignKey<Payment>(p => p.IdReservation);
         }
+        public DbSet<stellarCinema.Models.RegistrationViewModel> RegistrationViewModel { get; set; } = default!;
     }
 }
