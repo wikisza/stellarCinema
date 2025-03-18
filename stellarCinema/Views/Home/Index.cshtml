@@ -1,21 +1,32 @@
-﻿@{
+﻿@model List<stellarCinema.Entities.Movie>
+@{
 	ViewData["Title"] = "Repertuar";
 }
 
+
 <section class="slider">
-	<button class="prev">&#x25C0;</button>
-	<div class="slide">
-		<div class="movie-photo">movie photo</div>
-		<div class="movie-description">
-			<p>movie description</p>
-			<div class="desc-bar">
-				<button class="buy">Kup bilety</button>
-				<button class="more">Pokaż więcej</button>
-			</div>
-		</div>
-	</div>
-	<button class="next">&#x25B6;</button>
+    <button class="prev">&#x25C0;</button>
+
+    @foreach (var movie in Model)
+    {
+        <div class="slide">
+            <div class="movie-photo">
+                <img src="@movie.PosterUrl" alt="@movie.Title" />
+            </div>
+            <div class="movie-description">
+                <h3>@movie.Title</h3>
+                <p>@movie.Description</p>
+                <div class="desc-bar">
+                    <button class="buy">Kup bilety</button>
+                    <button class="more">Pokaż więcej</button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <button class="next">&#x25B6;</button>
 </section>
+
 
 <section class="repertoire">
 	<div class="tabs">

@@ -13,7 +13,7 @@ namespace stellarCinema.Entities
         [MaxLength(100)]
         public string Genre { get; set; }
         [MaxLength(100)]
-        public string PosterUrl { get; set; }
+        public string? PosterUrl { get; set; }
         public DateOnly ReleaseDate { get; set; }
         [MaxLength(200)]
         public string MovieLink { get; set; }

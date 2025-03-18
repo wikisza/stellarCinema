@@ -1,1 +1,66 @@
-﻿<h1>filmy</h1>
+﻿@model IEnumerable<stellarCinema.Entities.Movie>
+
+
+<h1>filmy</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PosterUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieLink)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(model => item.Title)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.Description)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.Duration)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.Genre)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.PosterUrl)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.ReleaseDate)
+                </th>
+                <th>
+                    @Html.DisplayFor(model => item.MovieLink)
+                </th>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdMovie">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdMovie">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdMovie">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

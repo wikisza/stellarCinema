@@ -1,21 +1,27 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using stellarCinema.Entities;
 using stellarCinema.Models;
 
 namespace stellarCinema.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationContext _context;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var movies = await _context.Movies.ToListAsync();
+            return View(movies);
         }
 
         public IActionResult EmployeePanel()

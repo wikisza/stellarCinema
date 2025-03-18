@@ -1,33 +1,73 @@
-﻿
-    let currentSlide = 0;
-    const slides = [
-    {photo: 'Film 1', desc: 'Opis filmu 1' },
-    {photo: 'Film 2', desc: 'Opis filmu 2' }
-    ];
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const slides = document.querySelectorAll(".slide");
+    let currentIndex = 0;
+    const intervalTime = 15000; // 5 sekund
+    let slideInterval;
 
-    function updateSlide() {
-        document.querySelector('.movie-photo').textContent = slides[currentSlide].photo;
-    document.querySelector('.movie-description p').textContent = slides[currentSlide].desc;
-        }
-        
-        document.querySelector('.next').addEventListener('click', () => {
-        currentSlide = (currentSlide + 1) % slides.length;
-    updateSlide();
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.style.display = i === index ? "flex" : "none";
         });
-        document.querySelector('.prev').addEventListener('click', () => {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    updateSlide();
-        });
-        setInterval(() => {
-        currentSlide = (currentSlide + 1) % slides.length;
-    updateSlide();
-        }, 5000);
-        
-        document.querySelectorAll('.tabs button').forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-            button.classList.add('active');
-            document.querySelectorAll('.movies').forEach(m => m.classList.add('hidden'));
-            document.getElementById(button.dataset.tab).classList.remove('hidden');
-        });
-        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
+        showSlide(currentIndex);
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
+        showSlide(currentIndex);
+    }
+
+    document.querySelector(".prev").addEventListener("click", function () {
+        prevSlide();
+        resetInterval();
+    });
+
+    document.querySelector(".next").addEventListener("click", function () {
+        nextSlide();
+        resetInterval();
+    });
+
+    function startAutoSlide() {
+        slideInterval = setInterval(nextSlide, intervalTime);
+    }
+
+    function resetInterval() {
+        clearInterval(slideInterval);
+        startAutoSlide();
+    }
+
+    showSlide(currentIndex);
+    startAutoSlide();
+
+
+document.querySelector('[data-tab="now"]').addEventListener("click", function () {
+    fetch('/Movies/GetNowPlaying')
+        .then(response => response.json())
+        .then(movies => displayMovies(movies, "now"));
+});
+
+document.querySelector('[data-tab="soon"]').addEventListener("click", function () {
+    fetch('/Movies/GetComingSoon')
+        .then(response => response.json())
+        .then(movies => displayMovies(movies, "soon"));
+});
+
+function displayMovies(movies, sectionId) {
+    const section = document.getElementById(sectionId);
+    section.innerHTML = movies.map(movie => `
+        <div class="movie">
+            <img src="${movie.posterUrl}" alt="${movie.title} Poster" />
+            <h3>${movie.title}</h3>
+            <p>${movie.description}</p>
+            <p>${movie.duration} min | ${movie.genre}</p>
+            <button onclick="buyTicket(${movie.id})">Zobacz godziny</button>
+        </div>
+    `).join('');
+    section.classList.remove('hidden');
+}
+
+
+});
