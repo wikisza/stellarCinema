@@ -1,7 +1,7 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
     const slides = document.querySelectorAll(".slide");
     let currentIndex = 0;
-    const intervalTime = 15000; // 5 sekund
+    const intervalTime = 15000; // 15 sekund
     let slideInterval;
 
     function showSlide(index) {
@@ -55,19 +55,6 @@ document.querySelector('[data-tab="soon"]').addEventListener("click", function (
         .then(movies => displayMovies(movies, "soon"));
 });
 
-function displayMovies(movies, sectionId) {
-    const section = document.getElementById(sectionId);
-    section.innerHTML = movies.map(movie => `
-        <div class="movie">
-            <img src="${movie.posterUrl}" alt="${movie.title} Poster" />
-            <h3>${movie.title}</h3>
-            <p>${movie.description}</p>
-            <p>${movie.duration} min | ${movie.genre}</p>
-            <button onclick="buyTicket(${movie.id})">Zobacz godziny</button>
-        </div>
-    `).join('');
-    section.classList.remove('hidden');
-}
 
 
 });

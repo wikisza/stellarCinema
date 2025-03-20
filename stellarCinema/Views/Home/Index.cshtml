@@ -7,7 +7,7 @@
 <section class="slider">
     <button class="prev">&#x25C0;</button>
 
-    @foreach (var movie in Model)
+    @foreach (var movie in Model.Where(m => m.ReleaseDate <= DateOnly.FromDateTime(DateTime.Today)))
     {
         <div class="slide">
             <div class="movie-photo">
@@ -18,7 +18,7 @@
                 <p>@movie.Description</p>
                 <div class="desc-bar">
                     <button class="buy">Kup bilety</button>
-                    <button class="more">Pokaż więcej</button>
+                    <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
                 </div>
             </div>
         </div>
@@ -29,16 +29,43 @@
 
 
 <section class="repertoire">
-	<div class="tabs">
-		<button class="active" data-tab="now">Na ekranie</button>
-		<button data-tab="soon">Wkrótce</button>
-	</div>
-	<div class="movies" id="now">
-		<div class="movie">Film 1<br>120 min | Akcja<br><button>Zobacz godziny</button></div>
-		<div class="movie">Film 2<br>90 min | Komedia<br><button>Zobacz godziny</button></div>
-	</div>
-	<div class="movies hidden" id="soon">
-		<div class="movie">Film 3<br>110 min | Thriller<br><button>Zobacz godziny</button></div>
-		<div class="movie">Film 4<br>130 min | Dramat<br><button>Zobacz godziny</button></div>
-	</div>
+    <div class="tabs">
+        <button class="active" data-tab="now">Na ekranie</button>
+        <button data-tab="soon">Wkrótce</button>
+    </div>
+    <div class="movies" id="now">
+        @foreach (var movie in Model.Where(m => m.ReleaseDate <= DateOnly.FromDateTime(DateTime.Today)))
+        {
+            <div class="movie">
+                <img class="imgRepertoire" src="@movie.PosterUrl" /><br />
+                <b><h3>@movie.Title</h3></b>
+                @movie.Duration min | @movie.Genre<br>
+                <button>Zobacz godziny</button>
+            </div>
+        }
+    </div>
+    <div class="movies hidden" id="soon">
+        @foreach (var movie in Model.Where(m => m.ReleaseDate > DateOnly.FromDateTime(DateTime.Today)))
+        {
+            <div class="movie">
+                <img class="imgRepertoire" src="@movie.PosterUrl" /><br />
+                @movie.Title<br>
+                @movie.ReleaseDate | @movie.Genre<br>
+                <button>Zobacz godziny</button>
+            </div>
+        }
+    </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".tabs button").forEach(button => {
+            button.addEventListener("click", () => {
+                document.querySelectorAll(".movies").forEach(section => section.classList.add("hidden"));
+                document.getElementById(button.dataset.tab).classList.remove("hidden");
+                document.querySelector(".tabs .active").classList.remove("active");
+                button.classList.add("active");
+            });
+        });
+    });
+</script>

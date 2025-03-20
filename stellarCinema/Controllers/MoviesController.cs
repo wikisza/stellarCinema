@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using stellarCinema.Entities;
 
 namespace stellarCinema.Controllers
@@ -20,18 +21,23 @@ namespace stellarCinema.Controllers
             return View(movies);
         }
 
-        public async Task<IActionResult> GetNowPlaying()
+        [HttpGet("/GetNowPlaying")]
+        public async Task<JsonResult> GetNowPlaying()
         {
+            var today = DateOnly.FromDateTime(DateTime.Today);
             var nowPlayingMovies = await _context.Movies
-                .Where(m => m.ReleaseDate <= DateOnly.FromDateTime(DateTime.Today))
+                .Where(m => m.ReleaseDate < today)
                 .ToListAsync();
+
             return Json(nowPlayingMovies);
         }
 
+        [HttpGet("/GetComingSoon")]
         public async Task<IActionResult> GetComingSoon()
         {
+            var today = DateOnly.FromDateTime(DateTime.Today);
             var comingSoonMovies = await _context.Movies
-                .Where(m => m.ReleaseDate > DateOnly.FromDateTime(DateTime.Today))
+                .Where(m => m.ReleaseDate > today)
                 .ToListAsync();
             return Json(comingSoonMovies);
         }
@@ -83,6 +89,24 @@ namespace stellarCinema.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            return View(movie);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Movies
+                .FirstOrDefaultAsync(m => m.IdMovie == id);
+            if (movie == null)
+            {
+                Console.WriteLine($"Movie with ID {id} not found.");
+                return NotFound();
+            }
+
             return View(movie);
         }
 

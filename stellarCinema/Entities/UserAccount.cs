@@ -9,7 +9,7 @@ namespace stellarCinema.Entities
         [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "Email is required")]
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string Email { get; set; }
         [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]

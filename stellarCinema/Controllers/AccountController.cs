@@ -243,31 +243,32 @@ namespace stellarCinema.Controllers
             if (ModelState.IsValid)
             {
                 var user = _context.UserAccounts
-                    .Where(x => x.Email == model.Email).FirstOrDefault();
-                if (user != null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
-                {
-                    //success
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.FirstName),
-                        new Claim(ClaimTypes.Role, user.Role),
-                        new Claim(ClaimTypes.Email, user.Email),
-                    };
+                    .Where(x => x.Email == model.Email)
+                    .FirstOrDefault();
 
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-                    return RedirectToAction("Home");
-                }
-                else
+                if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
                 {
-                    ModelState.AddModelError("", "Username/Email lub hasło jest niepoprawne.");
+                    ModelState.AddModelError("", "Email lub hasło jest niepoprawne.");
+                    return View(model);
                 }
 
+                // Logowanie powiodło się
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.FirstName),
+            new Claim(ClaimTypes.Role, user.Role),
+            new Claim(ClaimTypes.Email, user.Email),
+        };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                return RedirectToAction("Home");
             }
 
             return View(model);
         }
+
 
         public IActionResult Logout()
         {
