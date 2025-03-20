@@ -42,6 +42,17 @@ namespace stellarCinema.Controllers
             return Json(comingSoonMovies);
         }
 
+        [HttpGet]
+        public JsonResult GetMovieSuggestions(string term)
+        {
+            var movies = _context.Movies
+                .Where(m => m.Title.Contains(term))
+                .Select(m => new { idMovie = m.IdMovie, title = m.Title })
+                .Take(10)
+                .ToList();
+
+            return Json(movies);
+        }
 
         public IActionResult Create()
         {

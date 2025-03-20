@@ -17,7 +17,7 @@
                 <h3>@movie.Title</h3>
                 <p>@movie.Description</p>
                 <div class="desc-bar">
-                    <button class="buy">Kup bilety</button>
+                    <button class="buy">Kup bilet</button>
                     <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                 <img class="imgRepertoire" src="@movie.PosterUrl" /><br />
                 <b><h3>@movie.Title</h3></b>
                 @movie.Duration min | @movie.Genre<br>
-                <button>Zobacz godziny</button>
+                <button>Kup bilet</button>
             </div>
         }
     </div>
@@ -51,7 +51,7 @@
                 <img class="imgRepertoire" src="@movie.PosterUrl" /><br />
                 @movie.Title<br>
                 @movie.ReleaseDate | @movie.Genre<br>
-                <button>Zobacz godziny</button>
+                <button>Kup bilet</button>
             </div>
         }
     </div>

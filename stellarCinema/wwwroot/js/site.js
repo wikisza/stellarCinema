@@ -43,18 +43,69 @@
     startAutoSlide();
 
 
-document.querySelector('[data-tab="now"]').addEventListener("click", function () {
-    fetch('/Movies/GetNowPlaying')
-        .then(response => response.json())
-        .then(movies => displayMovies(movies, "now"));
+    document.querySelector('[data-tab="now"]').addEventListener("click", function () {
+        fetch('/Movies/GetNowPlaying')
+            .then(response => response.json())
+            .then(movies => displayMovies(movies, "now"));
+    });
+
+    document.querySelector('[data-tab="soon"]').addEventListener("click", function () {
+        fetch('/Movies/GetComingSoon')
+            .then(response => response.json())
+            .then(movies => displayMovies(movies, "soon"));
+    });
+
+
+
 });
 
-document.querySelector('[data-tab="soon"]').addEventListener("click", function () {
-    fetch('/Movies/GetComingSoon')
-        .then(response => response.json())
-        .then(movies => displayMovies(movies, "soon"));
+////////////////// MOVIE SEARCH BAR //////////////////
+
+$(document).ready(function () {
+    $("#movieSearch").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "/Movies/GetMovieSuggestions",
+                type: "GET",
+                dataType: "json",
+                data: { term: request.term },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            label: item.title,
+                            value: item.title,
+                            id: item.idMovie
+                        };
+                    }));
+                }
+            });
+        },
+        select: function (event, ui) {
+            $("#selectedMovieId").val(ui.item.id);
+        }
+    });
 });
 
+////////////////// HALL AVAILABLE CHECK //////////////////
 
+//$(document).ready(function () {
+//    $("#hallsFiller, #ShowtimeDate").change(function () {
+//        var hallId = $("#hallsFiller").val();
+//        var showtimeDate = $("#ShowtimeDate").val();
 
-});
+//        if (hallId && showtimeDate) {
+//            $.ajax({
+//                url: "/Showtime/CheckHallAvailability",
+//                type: "GET",
+//                data: { hallId: hallId, showtimeDate: showtimeDate },
+//                success: function (response) {
+//                    if (!response.available) {
+//                        alert("Ta sala jest już zajęta w wybranym terminie!");
+//                        $("#ShowtimeDate").val(""); 
+//                    }
+//                }
+//            });
+//        }
+//    });
+//});
+
