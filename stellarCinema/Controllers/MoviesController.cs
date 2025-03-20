@@ -121,5 +121,17 @@ namespace stellarCinema.Controllers
             return View(movie);
         }
 
+        public IActionResult AvailableMovieHours(int id)
+        {
+            var showtimes = _context.Showtimes
+        .Where(s => s.IdMovie == id)
+        .OrderBy(s => s.ShowtimeDate)
+        .ToList();
+
+            ViewBag.Movie = _context.Movies.FirstOrDefault(m => m.IdMovie == id);
+
+            return View(showtimes);
+        }
+
     }
 }

@@ -1,23 +1,23 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
+    const slidesContainer = document.querySelector(".slides-container");
     const slides = document.querySelectorAll(".slide");
     let currentIndex = 0;
-    const intervalTime = 15000; // 15 sekund
+    const intervalTime = 15000; 
     let slideInterval;
 
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.style.display = i === index ? "flex" : "none";
-        });
+    function updateSlidePosition() {
+        const offset = -currentIndex * 100; 
+        slidesContainer.style.transform = `translateX(${offset}%)`;
     }
 
     function nextSlide() {
-        currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
-        showSlide(currentIndex);
+        currentIndex = (currentIndex + 1) % slides.length; 
+        updateSlidePosition();
     }
 
     function prevSlide() {
-        currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
-        showSlide(currentIndex);
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length; 
+        updateSlidePosition();
     }
 
     document.querySelector(".prev").addEventListener("click", function () {
@@ -39,8 +39,10 @@
         startAutoSlide();
     }
 
-    showSlide(currentIndex);
+    
     startAutoSlide();
+
+
 
 
     document.querySelector('[data-tab="now"]').addEventListener("click", function () {
@@ -85,27 +87,3 @@ $(document).ready(function () {
         }
     });
 });
-
-////////////////// HALL AVAILABLE CHECK //////////////////
-
-//$(document).ready(function () {
-//    $("#hallsFiller, #ShowtimeDate").change(function () {
-//        var hallId = $("#hallsFiller").val();
-//        var showtimeDate = $("#ShowtimeDate").val();
-
-//        if (hallId && showtimeDate) {
-//            $.ajax({
-//                url: "/Showtime/CheckHallAvailability",
-//                type: "GET",
-//                data: { hallId: hallId, showtimeDate: showtimeDate },
-//                success: function (response) {
-//                    if (!response.available) {
-//                        alert("Ta sala jest już zajęta w wybranym terminie!");
-//                        $("#ShowtimeDate").val(""); 
-//                    }
-//                }
-//            });
-//        }
-//    });
-//});
-

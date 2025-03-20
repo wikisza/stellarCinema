@@ -72,20 +72,36 @@ nav a {
 .slider {
     display: flex;
     align-items: center;
-    align-content: center;
     justify-content: center;
     width: 100%;
     height: 60vh;
     margin: auto;
-    background: rgb(2,0,36);
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(31,31,108,1) 35%, rgba(17,184,218,1) 100%);
+    overflow: hidden;
+    position: relative;
+}
+
+.slides-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Dodano p³ynne przejœcie */
+    width: 100%;
 }
 
 .slide {
+    flex: 0 0 100%; /* Ka¿dy slajd zajmuje pe³n¹ szerokoœæ */
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 55vh;
-    width:90%;
+    text-align: center;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
 }
 
 .movie-photo{
@@ -98,7 +114,7 @@ nav a {
 
 .movie-description {
     width: 50%;
-    padding: 20px;
+    padding-right: 15vh;
     color: white;
     text-align: left;
 }
@@ -112,6 +128,18 @@ nav a {
         font-size: 16px;
         margin: 10px 0;
     }
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 2;
+}
 
 .desc-bar {
     display: flex;
@@ -217,6 +245,11 @@ button {
 
 .movie h3{
     margin:0;
+}
+
+.movie h4 {
+    font-weight: normal;
+    margin-top: 0;
 }
 
 .employeeView {

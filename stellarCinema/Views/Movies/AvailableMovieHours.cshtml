@@ -1,0 +1,24 @@
+﻿@model List<stellarCinema.Entities.Showtime>
+
+@{
+	ViewData["Title"] = "Dostępne godziny";
+}
+
+<h1>Dostępne seanse dla filmu: @ViewBag.Movie.Title</h1>
+
+@if (!Model.Any())
+{
+	<p>Brak dostępnych seansów dla tego filmu.</p>
+}
+else
+{
+
+	@foreach (var showtime in Model)
+	{
+
+		<b>@showtime.ShowtimeDate.ToString("dd MMM yyyy HH:mm")</b>
+		<a asp-action="Book" asp-controller="Reservations" asp-route-id="@showtime.IdShowtime">Rezerwuj</a>
+
+	}
+
+}
