@@ -258,3 +258,52 @@ button {
     align-items: center;
     margin: 20px;
 }
+
+.showtimeContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.showtimeLeftSide {
+    display: flex;
+    
+    flex-direction: column;
+    width: 40%;
+}
+
+.showtimeRightSide {
+    display: flex;
+    
+    width: 60%;
+}
+
+#calendar{
+    width:50vw;
+}
+
+
+.fc {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding:1rem;
+}
+
+.fc-daygrid-day:hover {
+    background-color: #f0f8ff;
+    cursor: pointer;
+}
+
+
+.fc-event {
+    background-color: #2a3e5c;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+    .fc-event:hover {
+        transform: scale(1.05);
+        background-color: #4b72ad;
+    }

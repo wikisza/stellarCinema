@@ -12,7 +12,9 @@ namespace stellarCinema.Entities
         public int IdHall { get; set; }
         public Hall? Hall { get; set; }
         [Precision(0)]
-        public DateTime ShowtimeDate { get; set; }
+        public DateTime ShowtimeDateStart { get; set; }
+        [Precision(0)]
+        public DateTime ShowtimeDateEnd { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
     }

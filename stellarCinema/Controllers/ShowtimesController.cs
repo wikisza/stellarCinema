@@ -32,12 +32,24 @@ namespace stellarCinema.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Showtime showtime)
         {
-            bool isAvailable = !_context.Showtimes
-                .Any(s => s.IdHall == showtime.IdHall && s.ShowtimeDate == showtime.ShowtimeDate);
+            var movie = _context.Movies.FirstOrDefault(m => m.IdMovie == showtime.IdMovie);
+            if (movie == null)
+            {
+                ModelState.AddModelError("IdMovie", "Nie znaleziono wybranego filmu.");
+                ViewBag.Halls = _context.Halls.ToList();
+                return View(showtime);
+            }
+
+            showtime.ShowtimeDateEnd = showtime.ShowtimeDateStart.AddMinutes(movie.Duration.TotalMinutes);
+
+            bool isAvailable = !_context.Showtimes.Any(s =>
+                s.IdHall == showtime.IdHall &&
+                (showtime.ShowtimeDateStart < s.ShowtimeDateEnd && showtime.ShowtimeDateEnd > s.ShowtimeDateStart)
+            );
 
             if (!isAvailable)
             {
-                ModelState.AddModelError("ShowtimeDate", "Ta sala jest już zajęta w wybranym terminie.");
+                ModelState.AddModelError("ShowtimeDateStart", "Sala jest już zajęta w wybranym terminie.");
                 ViewBag.Halls = _context.Halls.ToList();
                 return View(showtime);
             }
@@ -51,6 +63,27 @@ namespace stellarCinema.Controllers
 
             ViewBag.Halls = _context.Halls.ToList();
             return View(showtime);
+        }
+
+
+
+        [HttpGet("/get_showtimes")]
+        public IActionResult GetShowtimes(int id)
+        {
+            var showtimes = _context.Showtimes
+                .Where(s => s.IdMovie == id)
+                .Include(s => s.Movie)  
+                .Include(s => s.Hall)  
+                .Select(s => new
+                {
+                    start = s.ShowtimeDateStart.ToString("yyyy-MM-dd HH:mm:ss"),
+                    end = s.ShowtimeDateEnd.ToString("yyyy-MM-dd HH:mm:ss"),  
+                    title = s.Movie.Title,
+                    description = s.Hall.HallName 
+                })
+                .ToList();
+
+            return Json(showtimes);  
         }
 
 

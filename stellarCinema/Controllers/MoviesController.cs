@@ -69,7 +69,7 @@ namespace stellarCinema.Controllers
                 if (PosterFile != null && PosterFile.Length > 0)
                 {
                     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "posters");
-                    Directory.CreateDirectory(uploadsFolder); // Tworzy folder, jeśli nie istnieje
+                    Directory.CreateDirectory(uploadsFolder); 
 
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(PosterFile.FileName);
                     var filePath = Path.Combine(uploadsFolder, fileName);
@@ -125,10 +125,11 @@ namespace stellarCinema.Controllers
         {
             var showtimes = _context.Showtimes
         .Where(s => s.IdMovie == id)
-        .OrderBy(s => s.ShowtimeDate)
+        .OrderBy(s => s.ShowtimeDateStart)
         .ToList();
 
             ViewBag.Movie = _context.Movies.FirstOrDefault(m => m.IdMovie == id);
+            ViewBag.MovieId = id;
 
             return View(showtimes);
         }

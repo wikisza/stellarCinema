@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Hall)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ShowtimeDate)
+                @Html.DisplayNameFor(model => model.ShowtimeDateStart)
             </th>
             <th></th>
         </tr>
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.Hall.HallName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ShowtimeDate)
+                @Html.DisplayFor(modelItem => item.ShowtimeDateStart)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdShowtime">Edit</a> |
