@@ -16,12 +16,13 @@
 		}
 		else
 		{
-
 			@foreach (var showtime in Model)
 			{
+				<div class="oneShowtimeDate">
 
-				<b>@showtime.ShowtimeDateStart.ToString("dd MMM yyyy HH:mm")</b>
-				<a asp-action="Book" asp-controller="Reservations" asp-route-id="@showtime.IdShowtime">Rezerwuj</a>
+					<b>@showtime.ShowtimeDateStart.ToString("dd MMM yyyy HH:mm")</b>
+					<a asp-action="Book" asp-controller="Reservations" asp-route-id="@showtime.IdShowtime" class="buy">Rezerwuj</a>
+				</div>
 
 			}
 
@@ -32,100 +33,123 @@
 		<div id="calendar"></div>
 	</div>
 
-    <div id="movieModal" class="movieEdit" style="display:none">
-        <div class="movieModal-content">
-            <h3>Informacje o filmie</h3>
-            <p><strong>Tytuł:</strong> <span id="movieTitle"></span></p>
-            <p><strong>Data rozpoczęcia:</strong><span id="movieStart"></span> </p>
-            <p><strong>Data zakończenia:</strong><span id="movieEnd"></span> </p>
-            <p><strong>Opis:</strong><span id="movieDescription"></span> </p>
-            <button id="closeModal" style="margin-top: 10px;">Zamknij</button>
-        </div>
-    </div>
+	<div id="movieModal" class="movieEdit" style="display:none">
+		<div class="movieModal-content">
+			<h3>Informacje o filmie</h3>
+			<p><strong>Tytuł:</strong> <span id="movieTitle"></span></p>
+			<p><strong>Data rozpoczęcia:</strong><span id="movieStart"></span> </p>
+			<p><strong>Data zakończenia:</strong><span id="movieEnd"></span> </p>
+			<p><strong>Opis:</strong><span id="movieDescription"></span> </p>
+			<div id="movieButtons">
+			</div>
+		</div>
+	</div>
 </div>
 
 
 <script>
-        const darkPalette = [
-        "#4B0082", // Indigo
-        "#2F4F4F", // Dark Slate Gray
-        "#8B0000", // Dark Red
-        "#556B2F", // Dark Olive Green
-        "#483D8B", // Dark Slate Blue
-        "#191970", // Midnight Blue
-        "#2C2C54", // Deep Dark Blue
-        "#3C3C3C"  // Dark Gray
-    ];
+		const darkPalette = [
+		"#4B0082", // Indigo
+		"#2F4F4F", // Dark Slate Gray
+		"#8B0000", // Dark Red
+		"#556B2F", // Dark Olive Green
+		"#483D8B", // Dark Slate Blue
+		"#191970", // Midnight Blue
+		"#2C2C54", // Deep Dark Blue
+		"#3C3C3C"  // Dark Gray
+	];
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-        var movieId = @Html.Raw(ViewBag.MovieId); 
-        var calendarEl = document.getElementById('calendar');
+		document.addEventListener('DOMContentLoaded', function () {
+		var movieId = @Html.Raw(ViewBag.MovieId);
+		var calendarEl = document.getElementById('calendar');
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            firstDay: '1',
-            events: function (fetchInfo, successCallback, failureCallback) {
-                
-                fetch(`/get_showtimes?id=${movieId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const darkPalette = [
-                            "#4B0082", "#2F4F4F", "#8B0000", "#556B2F", "#483D8B", "#191970", "#2C2C54", "#3C3C3C"
-                        ];
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			initialView: 'dayGridMonth',
+			firstDay: '1',
+			slotMinTime: "10:00:00",
+			slotMaxTime: "22:00:00",
+			slotLabelFormat: {
+				hour: 'numeric',
+				minute: 'numeric',
+				omitZeroMinute:false,
+				hour12: false
+			},
+			events: function (fetchInfo, successCallback, failureCallback) {
 
-                        data.forEach((event, index) => {
-                            const colorIndex = index % darkPalette.length;
-                            event.backgroundColor = darkPalette[colorIndex];
-                            event.borderColor = darkPalette[colorIndex];
-                        });
+				fetch(`/get_showtimes?id=${movieId}`)
+					.then(response => response.json())
+					.then(data => {
 
-                        successCallback(data);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching events:', error);
-                        failureCallback(error);
-                    });
-            },
-            locale: 'pl',
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            buttonText: {
-                today: 'Dziś',
-                month: 'Miesiąc',
-                week: 'Tydzień',
-                day: 'Dzień'
-            },
-            eventClick: function (info) {
-                const modal = document.getElementById('movieModal');
-                modal.className = 'modal';
-                modal.style.position = 'fixed';
-                modal.style.left = '50%';
-                modal.style.top = '50%';
-                modal.style.transform = 'translate(-50%, -50%)';
-                modal.style.backgroundColor = '#fff';
-                modal.style.padding = '20px';
-                modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-                modal.style.borderRadius = '8px';
-                modal.style.zIndex = '1000';
+						data.forEach((event, index) => {
+							const colorIndex = index % darkPalette.length;
+							event.backgroundColor = darkPalette[colorIndex];
+							event.borderColor = darkPalette[colorIndex];
+						});
 
-                document.getElementById('movieTitle').innerText = info.event.title;
-                document.getElementById('movieStart').innerText = new Date(info.event.start).toLocaleString();
-                document.getElementById('movieEnd').innerText = info.event.end ? new Date(info.event.end).toLocaleString() : 'Brak';
-                document.getElementById('movieDescription').innerText = info.event.extendedProps.description || 'Brak opisu';
+						successCallback(data);
+					})
+					.catch(error => {
+						console.error('Error fetching events:', error);
+						failureCallback(error);
+					});
+			},
+			locale: 'pl',
+			headerToolbar: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'dayGridMonth,timeGridWeek,timeGridDay'
+			},
+			buttonText: {
+				today: 'Dziś',
+				month: 'Miesiąc',
+				week: 'Tydzień',
+				day: 'Dzień'
+			},
+			eventClick: function (info) {
+				const modal = document.getElementById('movieModal');
+				modal.className = 'modal';
+				modal.style.position = 'fixed';
+				modal.style.left = '50%';
+				modal.style.top = '50%';
+				modal.style.transform = 'translate(-50%, -50%)';
+				modal.style.color = 'black';
+				modal.style.backgroundColor = '#fff';
+				modal.style.padding = '20px';
+				modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+				modal.style.borderRadius = '8px';
+				modal.style.zIndex = '1000';
 
-                document.getElementById('movieModal').style.display = "block";
+				document.getElementById('movieTitle').innerText = info.event.title;
+				document.getElementById('movieStart').innerText = new Date(info.event.start).toLocaleString();
+				document.getElementById('movieEnd').innerText = info.event.end ? new Date(info.event.end).toLocaleString() : 'Brak';
+				document.getElementById('movieDescription').innerText = info.event.extendedProps.description || 'Brak opisu';
 
-                document.getElementById('closeModal').addEventListener('click', function () {
-                    document.getElementById('movieModal').style.display = 'none';
-                });
-            }
-        });
+				document.getElementById('movieModal').style.display = "block";
 
-        calendar.render();
-    });
+				const movieButtons = document.getElementById('movieButtons');
+				movieButtons.innerHTML = '';
+
+
+			const bookButton = document.createElement('a');
+			bookButton.href = `/Reservations/Book/${info.event.id}`;
+			bookButton.className = 'buy';
+			bookButton.innerText = 'Rezerwuj';
+			movieButtons.appendChild(bookButton);
+
+
+			const closeButton = document.createElement('button');
+			closeButton.id = 'closeModal';
+			closeButton.innerText = 'Zamknij';
+			closeButton.style.marginTop = '10px';
+			closeButton.addEventListener('click', function () {
+				modal.style.display = 'none';
+			});
+			movieButtons.appendChild(closeButton);
+			}
+		});
+
+		calendar.render();
+	});
 
 </script>

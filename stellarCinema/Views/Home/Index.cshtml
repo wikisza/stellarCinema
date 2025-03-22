@@ -42,6 +42,7 @@
                 <h3>@movie.Title</h3>
                 <h4>@movie.Duration min | @movie.Genre</h4>
                 <a asp-action="AvailableMovieHours" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="buy">Kup bilet</a>
+                <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
             </div>
         }
     </div>

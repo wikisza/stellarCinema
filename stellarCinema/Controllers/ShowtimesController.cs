@@ -11,14 +11,9 @@ namespace stellarCinema.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var showtimes = await _context.Showtimes
-                .Include(s =>s.Movie)
-                .Include(s=>s.Hall)
-            .ToListAsync();
-
-            return View(showtimes);
+            return View();
         }
 
         public IActionResult Create()
@@ -79,11 +74,29 @@ namespace stellarCinema.Controllers
                     start = s.ShowtimeDateStart.ToString("yyyy-MM-dd HH:mm:ss"),
                     end = s.ShowtimeDateEnd.ToString("yyyy-MM-dd HH:mm:ss"),  
                     title = s.Movie.Title,
-                    description = s.Hall.HallName 
+                    description = " Sala numer " + s.Hall.HallName 
                 })
                 .ToList();
 
             return Json(showtimes);  
+        }
+
+        [HttpGet("/get_all_showtimes")]
+        public IActionResult GetAllShowtimes()
+        {
+            var showtimes = _context.Showtimes
+                .Include(s => s.Movie)
+                .Include(s => s.Hall)
+                .Select(s => new
+                {
+                    start = s.ShowtimeDateStart.ToString("yyyy-MM-dd HH:mm:ss"),
+                    end = s.ShowtimeDateEnd.ToString("yyyy-MM-dd HH:mm:ss"),
+                    title = s.Movie.Title,
+                    description = s.Hall.HallName
+                })
+                .ToList();
+
+            return Json(showtimes);
         }
 
 
