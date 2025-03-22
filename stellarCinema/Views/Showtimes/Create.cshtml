@@ -12,18 +12,25 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
-                <label asp-for="IdMovie" class="control-label"></label>
-                <select asp-for="IdMovie" class ="form-control" asp-items="ViewBag.IdMovie"></select>
+                <input type="text" class="form-control" id="movieSearch" placeholder="Wpisz tytuł filmu">
+                <input type="hidden" id="selectedMovieId" name="IdMovie"> 
+            </div>
+
+            <div class="form-group">
+                <select asp-for="IdHall" class="form-control" id="hallsFiller">
+                    <option value="">Wybierz salę</option>
+					@foreach (var hall in ViewBag.Halls)
+					{
+						<option value="@hall.IdHall">@hall.HallName</option>
+					})
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="IdHall" class="control-label"></label>
-                <select asp-for="IdHall" class ="form-control" asp-items="ViewBag.IdHall"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShowtimeDate" class="control-label"></label>
-                <input asp-for="ShowtimeDate" class="form-control" />
-                <span asp-validation-for="ShowtimeDate" class="text-danger"></span>
+                <label asp-for="ShowtimeDateStart" class="control-label"></label>
+                <input asp-for="ShowtimeDateStart" class="form-control" />
+                <span asp-validation-for="ShowtimeDateStart" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -35,6 +42,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

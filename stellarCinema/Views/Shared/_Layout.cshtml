@@ -7,13 +7,17 @@
 	@* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/stellarCinema.styles.css" asp-append-version="true" />
+	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 </head>
 <body>
 	<header>
+		<div class="headerMain">
+
 		<a asp-area="" asp-controller="Home" asp-action="Index"><h1>Stellar Cinema</h1></a>
 		<nav>
 			<a asp-area="" asp-controller="Home" asp-action="Index">REPERTUAR</a>
 			<a asp-area="" asp-controller="Movies" asp-action="Index">FILMY</a>
+			<a asp-area="" asp-controller="Showtimes" asp-action="Index">KALENDARZ</a>
 		</nav>
 		@if (User.IsInRole("recepcionist"))
 		{
@@ -36,6 +40,7 @@
 				<h4><a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Logowanie</a></h4>
 			</div>
 		}
+		</div>
 	</header>
 
 	<div class="container">
@@ -51,6 +56,10 @@
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -18,13 +18,16 @@
                 <p>@Model.Description</p>
                 <h4>Szczegóły:</h4>
                 <ul class="list-unstyled">
-                    <li><strong>Czas trwania:</strong> @Model.Duration </li>
+                    @if (Model.Duration != TimeSpan.Zero)
+                    {
+                        <li><strong>Czas trwania:</strong> @Model.Duration </li>
+                    }
                     <li><strong>Gatunek:</strong> @Model.Genre</li>
                     <li><strong>Data premiery:</strong> @Model.ReleaseDate.ToShortDateString()</li>
                 </ul>
                 <div class="buttons mt-4">
                     <a href="@Model.MovieLink" class="buy" target="_blank">Zobacz na stronie</a>
-                    <a asp-action="Index" class="more">Wróć do strony głównej</a>
+                    <a asp-action="Index" asp-controller="Home" class="more">Wróć do strony głównej</a>
                 </div>
             </div>
         </div>

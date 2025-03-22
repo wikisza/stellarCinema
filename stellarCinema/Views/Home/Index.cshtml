@@ -6,26 +6,27 @@
 
 <section class="slider">
     <button class="prev">&#x25C0;</button>
-
-    @foreach (var movie in Model.Where(m => m.ReleaseDate <= DateOnly.FromDateTime(DateTime.Today)))
-    {
-        <div class="slide">
-            <div class="movie-photo">
-                <img src="@movie.PosterUrl" alt="@movie.Title" />
-            </div>
-            <div class="movie-description">
-                <h3>@movie.Title</h3>
-                <p>@movie.Description</p>
-                <div class="desc-bar">
-                    <button class="buy">Kup bilety</button>
-                    <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
+    <div class="slides-container">
+        @foreach (var movie in Model.Where(m => m.ReleaseDate <= DateOnly.FromDateTime(DateTime.Today)))
+        {
+            <div class="slide">
+                <div class="movie-photo">
+                    <img src="@movie.PosterUrl" alt="@movie.Title" />
+                </div>
+                <div class="movie-description">
+                    <h3>@movie.Title</h3>
+                    <p>@movie.Description</p>
+                    <div class="desc-bar">
+                        <a asp-action="AvailableMovieHours" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="buy">Kup bilet</a>
+                        <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-
+        }
+    </div>
     <button class="next">&#x25B6;</button>
 </section>
+
 
 
 <section class="repertoire">
@@ -37,10 +38,11 @@
         @foreach (var movie in Model.Where(m => m.ReleaseDate <= DateOnly.FromDateTime(DateTime.Today)))
         {
             <div class="movie">
-                <img class="imgRepertoire" src="@movie.PosterUrl" /><br />
-                <b><h3>@movie.Title</h3></b>
-                @movie.Duration min | @movie.Genre<br>
-                <button>Zobacz godziny</button>
+                <img class="imgRepertoire" src="@movie.PosterUrl" />
+                <h3>@movie.Title</h3>
+                <h4>@movie.Duration min | @movie.Genre</h4>
+                <a asp-action="AvailableMovieHours" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="buy">Kup bilet</a>
+                <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
             </div>
         }
     </div>
@@ -49,9 +51,9 @@
         {
             <div class="movie">
                 <img class="imgRepertoire" src="@movie.PosterUrl" /><br />
-                @movie.Title<br>
-                @movie.ReleaseDate | @movie.Genre<br>
-                <button>Zobacz godziny</button>
+                <h3>@movie.Title</h3>
+                <h4>@movie.ReleaseDate | @movie.Genre</h4>
+                <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
             </div>
         }
     </div>

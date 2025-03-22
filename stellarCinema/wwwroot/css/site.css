@@ -3,18 +3,19 @@
 :root {
     --bodyFont: 'Outfit', sans-serif;
     --headerFont: 'Big Shoulders', sans-serif;
-    --sand: #EAE2B7;
-    --yellow: #FCBF49;
-    --orange: #F77F00;
-    --red: #D62828;
-    --darkblue: #003049;
-    --dirtyWhite: #dad6d1;
+    --background: #121212;
+    --cardBackground: #1E1E1E;
+    --primaryText: #EAEAEA;
+    --secondaryText: #B0B0B0;
+    --highlight: #F77F00;
+    --accent: #D62828;
+    --border: #333;
 }
 
 body {
     font-family: var(--bodyFont);
-    background-color:var(--dirtyWhite);
-    color: var(--darkblue);
+    background-color: var(--background);
+    color: var(--primaryText);
     text-align: center;
     height: 100%;
     margin: 0;
@@ -26,7 +27,7 @@ body {
 
 
 .container {
-    background-color: var(--dirtyWhite);
+    background-color: var(--background);
     margin: 0;
     padding: 0;
     flex: 1;
@@ -36,33 +37,38 @@ body {
 }
 
 footer {
-    background: #222;
-    color: white;
+    background: var(--cardBackground);
+    color: var(--primaryText);
     text-align: center;
     padding: 20px;
 }
 
 
 header {
-    padding: 20px;
+    background: linear-gradient(90deg, rgba(5,4,23,1) 0%, rgba(31,31,108,1) 33%, rgba(16,166,197,1) 100%);
+    padding-bottom: 5px;
+}
+.headerMain {
+    padding:1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color:black;
 }
-header a{
-    text-decoration:none;
-    color:var(--darkblue);
+header a {
+    text-decoration: none;
+    color: var(--primaryText);
 }
 
 nav a {
     margin: 0 15px;
     text-decoration: none;
-    color: black;
+    color: var(--primaryText);
     font-weight: bold;
 }
 
 .login {
-    background: red;
+    background: var(--accent);
     color: white;
     padding: 10px;
     border: none;
@@ -72,20 +78,36 @@ nav a {
 .slider {
     display: flex;
     align-items: center;
-    align-content: center;
     justify-content: center;
     width: 100%;
     height: 60vh;
     margin: auto;
-    background: rgb(2,0,36);
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(31,31,108,1) 35%, rgba(17,184,218,1) 100%);
+    background: linear-gradient(90deg, rgba(5,4,23,1) 0%, rgba(31,31,108,1) 33%, rgba(16,166,197,1) 100%);
+    overflow: hidden;
+    position: relative;
+}
+
+.slides-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Dodano p³ynne przejœcie */
+    width: 100%;
 }
 
 .slide {
+    flex: 0 0 100%; /* Ka¿dy slajd zajmuje pe³n¹ szerokoœæ */
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 55vh;
-    width:90%;
+    text-align: center;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
 }
 
 .movie-photo{
@@ -98,7 +120,7 @@ nav a {
 
 .movie-description {
     width: 50%;
-    padding: 20px;
+    padding-right: 15vh;
     color: white;
     text-align: left;
 }
@@ -112,6 +134,18 @@ nav a {
         font-size: 16px;
         margin: 10px 0;
     }
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 2;
+}
 
 .desc-bar {
     display: flex;
@@ -151,6 +185,9 @@ button {
 
 .repertoire {
     padding: 20px;
+    width:80%;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .tabs button {
@@ -159,6 +196,7 @@ button {
     font-size: 18px;
     margin: 10px;
     cursor: pointer;
+    color: white;
 }
 
 .tabs .active {
@@ -169,6 +207,7 @@ button {
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap:wrap;
 }
 
 .hidden {
@@ -218,3 +257,83 @@ button {
 .movie h3{
     margin:0;
 }
+
+.movie h4 {
+    font-weight: normal;
+    margin-top: 0;
+}
+
+.employeeView {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px;
+}
+
+.showtimeContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.showtimeLeftSide {
+    display: flex;  
+    flex-direction: column;
+    width: 40%;
+    margin-top:3rem;
+}
+
+.oneShowtimeDate {
+    margin-bottom: 2rem;
+}
+
+
+.showtimeRightSide {
+    display: flex;
+    
+    width: 60%;
+}
+
+#calendar{
+    width:50vw;
+}
+
+
+.fc {
+    background-color: var(--cardBackground);
+    color: var(--primaryText);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+}
+
+.fc-daygrid-day:hover {
+    background-color: #333;
+    cursor: pointer;
+}
+
+
+.fc-event {
+    background-color: #2a3e5c;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+.fc-event:hover {
+    transform: scale(1.05);
+    background-color: var(--highlight);
+}
+
+.showtimesIndexContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px;
+}
+
+.showtimesIndexContainer #calendar {
+    width: 70vw;
+}
+    

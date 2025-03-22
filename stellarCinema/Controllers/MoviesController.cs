@@ -42,6 +42,17 @@ namespace stellarCinema.Controllers
             return Json(comingSoonMovies);
         }
 
+        [HttpGet]
+        public JsonResult GetMovieSuggestions(string term)
+        {
+            var movies = _context.Movies
+                .Where(m => m.Title.Contains(term))
+                .Select(m => new { idMovie = m.IdMovie, title = m.Title })
+                .Take(10)
+                .ToList();
+
+            return Json(movies);
+        }
 
         public IActionResult Create()
         {
@@ -58,7 +69,7 @@ namespace stellarCinema.Controllers
                 if (PosterFile != null && PosterFile.Length > 0)
                 {
                     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "posters");
-                    Directory.CreateDirectory(uploadsFolder); // Tworzy folder, jeśli nie istnieje
+                    Directory.CreateDirectory(uploadsFolder); 
 
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(PosterFile.FileName);
                     var filePath = Path.Combine(uploadsFolder, fileName);
@@ -108,6 +119,19 @@ namespace stellarCinema.Controllers
             }
 
             return View(movie);
+        }
+
+        public IActionResult AvailableMovieHours(int id)
+        {
+            var showtimes = _context.Showtimes
+        .Where(s => s.IdMovie == id)
+        .OrderBy(s => s.ShowtimeDateStart)
+        .ToList();
+
+            ViewBag.Movie = _context.Movies.FirstOrDefault(m => m.IdMovie == id);
+            ViewBag.MovieId = id;
+
+            return View(showtimes);
         }
 
     }

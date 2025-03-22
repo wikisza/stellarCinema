@@ -1,25 +1,51 @@
-﻿@model IEnumerable<stellarCinema.Entities.Showtime>
+﻿@model List<stellarCinema.Entities.Showtime>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Dostępne godziny";
 }
 
-<div class="showtimesIndexContainer">
+<h1>Dostępne seanse dla filmu: @ViewBag.Movie.Title</h1>
 
-	<div id="calendar"></div>
-</div>
+<div class="showtimeContainer">
 
-<div id="movieModal" class="movieEdit" style="display:none">
-	<div class="movieModal-content">
-		<h3>Informacje o filmie</h3>
-		<p><strong>Tytuł:</strong> <span id="movieTitle"></span></p>
-		<p><strong>Data rozpoczęcia:</strong><span id="movieStart"></span> </p>
-		<p><strong>Data zakończenia:</strong><span id="movieEnd"></span> </p>
-		<p><strong>Opis:</strong><span id="movieDescription"></span> </p>
-		<div id="movieButtons">
+	<div class="showtimeLeftSide">
+
+		@if (!Model.Any())
+		{
+			<p>Brak dostępnych seansów dla tego filmu.</p>
+		}
+		else
+		{
+			@foreach (var showtime in Model)
+			{
+				<div class="oneShowtimeDate">
+
+					<b>@showtime.ShowtimeDateStart.ToString("dd MMM yyyy HH:mm")</b>
+					<a asp-action="Book" asp-controller="Reservations" asp-route-id="@showtime.IdShowtime" class="buy">Rezerwuj</a>
+				</div>
+
+			}
+
+		}
+	</div>
+
+	<div class="showtimeRightSide">
+		<div id="calendar"></div>
+	</div>
+
+	<div id="movieModal" class="movieEdit" style="display:none">
+		<div class="movieModal-content">
+			<h3>Informacje o filmie</h3>
+			<p><strong>Tytuł:</strong> <span id="movieTitle"></span></p>
+			<p><strong>Data rozpoczęcia:</strong><span id="movieStart"></span> </p>
+			<p><strong>Data zakończenia:</strong><span id="movieEnd"></span> </p>
+			<p><strong>Opis:</strong><span id="movieDescription"></span> </p>
+			<div id="movieButtons">
+			</div>
 		</div>
 	</div>
 </div>
+
 
 <script>
 		const darkPalette = [
@@ -35,33 +61,25 @@
 
 
 		document.addEventListener('DOMContentLoaded', function () {
+		var movieId = @Html.Raw(ViewBag.MovieId);
 		var calendarEl = document.getElementById('calendar');
 
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			initialView: 'dayGridMonth',
 			firstDay: '1',
-			slotMinTime: "10:00:00", 
+			slotMinTime: "10:00:00",
 			slotMaxTime: "22:00:00",
 			slotLabelFormat: {
 				hour: 'numeric',
-				minute: '2-digit',
+				minute: 'numeric',
 				omitZeroMinute:false,
-				hour12: false,
-			},
-			eventTimeFormat:{
-				hour: 'numeric',
-				minute: '2-digit',
-				omitZeroMinute:false,
-				hour12: false,
+				hour12: false
 			},
 			events: function (fetchInfo, successCallback, failureCallback) {
 
-				fetch(`/get_all_showtimes`)
+				fetch(`/get_showtimes?id=${movieId}`)
 					.then(response => response.json())
 					.then(data => {
-						const darkPalette = [
-							"#4B0082", "#2F4F4F", "#8B0000", "#556B2F", "#483D8B", "#191970", "#2C2C54", "#3C3C3C"
-						];
 
 						data.forEach((event, index) => {
 							const colorIndex = index % darkPalette.length;
@@ -94,8 +112,8 @@
 				modal.style.position = 'fixed';
 				modal.style.left = '50%';
 				modal.style.top = '50%';
-				modal.style.color = 'black';
 				modal.style.transform = 'translate(-50%, -50%)';
+				modal.style.color = 'black';
 				modal.style.backgroundColor = '#fff';
 				modal.style.padding = '20px';
 				modal.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
@@ -119,7 +137,7 @@
 			bookButton.innerText = 'Rezerwuj';
 			movieButtons.appendChild(bookButton);
 
-			// Przycisk zamknięcia modala
+
 			const closeButton = document.createElement('button');
 			closeButton.id = 'closeModal';
 			closeButton.innerText = 'Zamknij';

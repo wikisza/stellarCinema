@@ -1,23 +1,23 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
+    const slidesContainer = document.querySelector(".slides-container");
     const slides = document.querySelectorAll(".slide");
     let currentIndex = 0;
-    const intervalTime = 15000; // 15 sekund
+    const intervalTime = 15000; 
     let slideInterval;
 
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.style.display = i === index ? "flex" : "none";
-        });
+    function updateSlidePosition() {
+        const offset = -currentIndex * 100; 
+        slidesContainer.style.transform = `translateX(${offset}%)`;
     }
 
     function nextSlide() {
-        currentIndex = (currentIndex === slides.length - 1) ? 0 : currentIndex + 1;
-        showSlide(currentIndex);
+        currentIndex = (currentIndex + 1) % slides.length; 
+        updateSlidePosition();
     }
 
     function prevSlide() {
-        currentIndex = (currentIndex === 0) ? slides.length - 1 : currentIndex - 1;
-        showSlide(currentIndex);
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length; 
+        updateSlidePosition();
     }
 
     document.querySelector(".prev").addEventListener("click", function () {
@@ -39,22 +39,51 @@
         startAutoSlide();
     }
 
-    showSlide(currentIndex);
+    
     startAutoSlide();
 
 
-document.querySelector('[data-tab="now"]').addEventListener("click", function () {
-    fetch('/Movies/GetNowPlaying')
-        .then(response => response.json())
-        .then(movies => displayMovies(movies, "now"));
+
+
+    document.querySelector('[data-tab="now"]').addEventListener("click", function () {
+        fetch('/Movies/GetNowPlaying')
+            .then(response => response.json())
+            .then(movies => displayMovies(movies, "now"));
+    });
+
+    document.querySelector('[data-tab="soon"]').addEventListener("click", function () {
+        fetch('/Movies/GetComingSoon')
+            .then(response => response.json())
+            .then(movies => displayMovies(movies, "soon"));
+    });
+
+
+
 });
 
-document.querySelector('[data-tab="soon"]').addEventListener("click", function () {
-    fetch('/Movies/GetComingSoon')
-        .then(response => response.json())
-        .then(movies => displayMovies(movies, "soon"));
-});
+////////////////// MOVIE SEARCH BAR //////////////////
 
-
-
+$(document).ready(function () {
+    $("#movieSearch").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "/Movies/GetMovieSuggestions",
+                type: "GET",
+                dataType: "json",
+                data: { term: request.term },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            label: item.title,
+                            value: item.title,
+                            id: item.idMovie
+                        };
+                    }));
+                }
+            });
+        },
+        select: function (event, ui) {
+            $("#selectedMovieId").val(ui.item.id);
+        }
+    });
 });
