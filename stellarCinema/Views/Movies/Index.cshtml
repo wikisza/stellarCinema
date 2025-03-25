@@ -1,18 +1,71 @@
 ﻿@model IEnumerable<stellarCinema.Entities.Movie>
 
-<h1>Filmy</h1>
+<div class="moviesData">
 
-<div class="movies">
-    @foreach (var movie in Model)
-    {
-        <div class="movie">
-            <img class="imgRepertoire" src="@movie.PosterUrl" /><br />
-            @movie.Title<br>
-            @if (movie.Duration != TimeSpan.Zero)
-            {
-                @movie.Duration.TotalMinutes @(" min | ")
-           }
-            @movie.Genre<br>
-        </div>
-    }
+	<h1>Baza filmów</h1>
+
+	<label>Filtruj po gatunku</label>
+	<select class="more" id="genreFilter">
+		<option value="">Wszystkie</option>
+		<option value="Akcja">Akcja</option>
+		<option value="Dramat">Dramat</option>
+		<option value="Komedia">Komedia</option>
+		<option value="Romans">Romans</option>
+		<option value="Musical">Musical</option>
+		<option value="Historyczny">Historyczny</option>
+		<option value="Biograficzny">Biograficzny</option>
+		<option value="Przygodowy">Przygodowy</option>
+		<option value="Western">Western</option>
+		<option value="Thriller">Thriller</option>
+		<option value="Kryminał">Kryminał</option>
+		<option value="Horror">Horror</option>
+		<option value="SciFi">Science fiction (Sci-Fi)</option>
+		<option value="Fantasy">Fantasy</option>
+		<option value="Animacja">Animacja</option>
+		<option value="Familijny">Familijny</option>
+		<option value="Dokumentalny">Dokumentalny</option>
+		<option value="Eksperymentalny">Eksperymentalny</option>
+	</select>
+
+	<div class="movies" id="allMoviesContainer">
+		@foreach (var movie in Model)
+		{
+
+			<div class="movie">
+				<div class="repertoireMovie">
+					<img class="imgRepertoire" src="@movie.PosterUrl" />
+					<h3>@movie.Title</h3>
+					@if (movie.Duration != TimeSpan.Zero)
+					{
+						<h4>@movie.Duration.ToString(@"h\h\ mm\m\i\n") | @movie.Genre</h4>
+					}
+				</div>
+				<div class="repertoireButtons">
+					<a asp-action="AvailableMovieHours" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="buy">Kup bilet</a>
+					<a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
+				</div>
+			</div>
+		}
+
+		<p id="noMoviesMessage" style="display: none;">Brak filmów w podanym gatunku</p>
+	</div>
 </div>
+
+<script>
+	document.getElementById("genreFilter").addEventListener("change", function () {
+		let selectedGenre = this.value.toLowerCase();
+		let movies = document.querySelectorAll(".movie");
+		let hasVisibleMovies = false;
+
+		movies.forEach(movie => {
+			let movieGenre = movie.innerText.toLowerCase();
+			if (selectedGenre === "" || movieGenre.includes(selectedGenre)) {
+				movie.style.display = "block";
+				hasVisibleMovies = true;
+			} else {
+				movie.style.display = "none";
+			}
+		});
+		document.getElementById("noMoviesMessage").style.display = hasVisibleMovies ? "none" : "block";
+	});
+</script>

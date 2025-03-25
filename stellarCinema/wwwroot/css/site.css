@@ -54,10 +54,35 @@ header {
     justify-content: space-between;
     align-items: center;
     background-color:black;
+    padding-right:50px;
+}
+
+.welcomeMessage{
+    margin-right:5px;
+}
+.cinemaName{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.cinemaName a{
+    font-size:40px;
+    margin-right:5px;
+    font-weight:bold;
+}
+
+.headerMain img{
+    width:90px;
 }
 header a {
     text-decoration: none;
     color: var(--primaryText);
+}
+
+
+.head-welcome p{
+    display:inline;
 }
 
 nav a {
@@ -136,15 +161,14 @@ nav a {
     }
 
 .prev, .next {
+    background-color: black;
+    background: rgba(0,0,0,0.5);
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
     color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 2;
+}
+
+.prev:hover, .next:hover {
+    background: rgba(0,0,0,0.8);
 }
 
 .desc-bar {
@@ -170,6 +194,7 @@ button {
     border-radius: 30px;
     font-size: 16px;
     cursor: pointer;
+    text-decoration:none;
 }
 
 .more {
@@ -185,6 +210,7 @@ button {
 
 .repertoire {
     padding: 20px;
+    max-width:1000px;
     width:80%;
     margin-left:auto;
     margin-right:auto;
@@ -206,9 +232,26 @@ button {
 .movies {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 60px 0px;
     flex-wrap:wrap;
+    margin: 20px 0px 20px 0px;
 }
+
+.movie {
+    width: 290px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
+.movie img{
+    width:217px;
+    height:280px;
+    object-fit:cover;
+}
+
 
 .hidden {
     display: none;
@@ -238,8 +281,9 @@ button {
 
 .movie-details h4 {
     margin-top: 20px;
-    color: #333;
+    text-decoration:underline;
 }
+
 
 .movie-details ul {
     padding: 0;
@@ -336,4 +380,17 @@ button {
 .showtimesIndexContainer #calendar {
     width: 70vw;
 }
-    
+
+.moviesData {
+    margin: 0px 0 20px 0;
+    padding: 0px 0 20px 0;
+    justify-content:center;
+    align-items:center;
+}
+
+#allMoviesContainer {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+  

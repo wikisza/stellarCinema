@@ -38,11 +38,15 @@
         @foreach (var movie in Model.Where(m => m.ReleaseDate <= DateOnly.FromDateTime(DateTime.Today)))
         {
             <div class="movie">
-                <img class="imgRepertoire" src="@movie.PosterUrl" />
-                <h3>@movie.Title</h3>
-                <h4>@movie.Duration min | @movie.Genre</h4>
-                <a asp-action="AvailableMovieHours" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="buy">Kup bilet</a>
-                <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
+                <div class="repertoireMovie">
+                    <img class="imgRepertoire" src="@movie.PosterUrl" />
+                    <h3>@movie.Title</h3>
+                    <h4>@movie.Duration.ToString(@"h\h\ mm\m\i\n") | @movie.Genre</h4>
+                </div>
+                <div class="repertoireButtons">
+                    <a asp-action="AvailableMovieHours" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="buy">Kup bilet</a>
+                    <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
+                </div>
             </div>
         }
     </div>
@@ -50,9 +54,11 @@
         @foreach (var movie in Model.Where(m => m.ReleaseDate > DateOnly.FromDateTime(DateTime.Today)))
         {
             <div class="movie">
+                <div class="repertoireMovie">
                 <img class="imgRepertoire" src="@movie.PosterUrl" /><br />
                 <h3>@movie.Title</h3>
                 <h4>@movie.ReleaseDate | @movie.Genre</h4>
+				</div>
                 <a asp-action="Details" asp-controller="Movies" asp-route-id="@movie.IdMovie" class="more">Pokaż więcej</a>
             </div>
         }
