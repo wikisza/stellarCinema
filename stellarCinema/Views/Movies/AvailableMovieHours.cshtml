@@ -137,11 +137,13 @@
 				movieButtons.innerHTML = '';
 
 
-			const bookButton = document.createElement('a');
-			bookButton.href = `/Reservations/Book/${info.event.id}`;
-			bookButton.className = 'buy';
-			bookButton.innerText = 'Rezerwuj';
-			movieButtons.appendChild(bookButton);
+			if (!info.event.extendedProps.isPast) {
+				const bookButton = document.createElement('a');
+				bookButton.href = `/Reservations/Book/${info.event.id}`;
+				bookButton.className = 'buy';
+				bookButton.innerText = 'Rezerwuj';
+				movieButtons.appendChild(bookButton);
+			}
 
 
 			const closeButton = document.createElement('button');

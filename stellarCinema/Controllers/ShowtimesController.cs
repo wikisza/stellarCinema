@@ -65,16 +65,20 @@ namespace stellarCinema.Controllers
         [HttpGet("/get_showtimes")]
         public IActionResult GetShowtimes(int id)
         {
+            var now = DateTime.Now;
+
             var showtimes = _context.Showtimes
                 .Where(s => s.IdMovie == id)
                 .Include(s => s.Movie)  
                 .Include(s => s.Hall)  
                 .Select(s => new
                 {
+                    id = s.IdShowtime,
                     start = s.ShowtimeDateStart.ToString("yyyy-MM-dd HH:mm:ss"),
                     end = s.ShowtimeDateEnd.ToString("yyyy-MM-dd HH:mm:ss"),  
                     title = s.Movie.Title,
-                    description = " Sala numer " + s.Hall.HallName 
+                    description = " Sala numer " + s.Hall.HallName,
+                    isPast = s.ShowtimeDateStart <= now
                 })
                 .ToList();
 
@@ -84,15 +88,18 @@ namespace stellarCinema.Controllers
         [HttpGet("/get_all_showtimes")]
         public IActionResult GetAllShowtimes()
         {
+            var now = DateTime.Now;
             var showtimes = _context.Showtimes
                 .Include(s => s.Movie)
                 .Include(s => s.Hall)
                 .Select(s => new
                 {
+                    id = s.IdShowtime,
                     start = s.ShowtimeDateStart.ToString("yyyy-MM-dd HH:mm:ss"),
                     end = s.ShowtimeDateEnd.ToString("yyyy-MM-dd HH:mm:ss"),
                     title = s.Movie.Title,
-                    description = s.Hall.HallName
+                    description = s.Hall.HallName,
+                    isPast = s.ShowtimeDateStart <= now
                 })
                 .ToList();
 
