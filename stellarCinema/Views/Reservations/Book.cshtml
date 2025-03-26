@@ -1,5 +1,45 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model stellarCinema.Entities.Showtime
+
 @{
+	var totalSeats = Model.Hall.TotalSeats;
+	var seatsPerRow = 10;
+	var rowLabels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var totalRows = (int)Math.Ceiling((double)totalSeats / seatsPerRow);
 }
+
+<h2>Wybierz miejsca na film '@Model.Movie.Title'</h2>
+<div class="bookContainer">
+	<form method="post" action="@Url.Action("ConfirmBooking", "Booking")">
+		<span class="screen">Ekran</span>
+		<div class="seatsContainer">
+			@for (int row = 0; row < totalRows; row++)
+			{
+				<div class="seat-row">
+					<strong>@rowLabels[row]</strong>
+					@for (int seat = 1; seat <= seatsPerRow; seat++)
+					{
+						int seatNumber = row * seatsPerRow + seat;
+						if (seatNumber > totalSeats) break;
+						<label class="seatLabel">
+							<input type="checkbox" name="selectedSeats" value="@rowLabels[row]@seat" class="seat-checkbox" />
+							<span class="seat">@rowLabels[row]@seat</span>
+						</label>
+					}
+				</div>
+			}
+		</div>
+		<button type="submit">Zarezerwuj</button>
+	</form>
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		document.querySelectorAll(".seat-label").forEach(label => {
+			label.addEventListener("click", function () {
+				let checkbox = this.querySelector(".seat-checkbox");
+				checkbox.checked = !checkbox.checked;
+				this.querySelector(".seat").classList.toggle("selected", checkbox.checked);
+			});
+		});
+	});
+</script>
