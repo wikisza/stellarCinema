@@ -18,6 +18,7 @@ namespace stellarCinema.Entities
         public DbSet<Hall> Halls { get; set; }
         public DbSet<ReservationSeat> ReservationSeats { get; set; }
         public DbSet<Showtime> Showtimes { get; set; }
+        public DbSet<Configuration> Configurations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

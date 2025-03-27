@@ -398,6 +398,7 @@ button {
 .bookContainer {
     display: flex;
     justify-content: center;
+    flex-direction:column;
 }
 
 .seatsContainer{
@@ -462,4 +463,11 @@ button {
 .seat-checkbox:checked + .seat,
 .seat.selected {
     background-color: green;
+}
+
+.bookInformations {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 20px;
 }
