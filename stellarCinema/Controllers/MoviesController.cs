@@ -123,10 +123,11 @@ namespace stellarCinema.Controllers
 
         public IActionResult AvailableMovieHours(int id)
         {
+            var now = DateTime.Now;
             var showtimes = _context.Showtimes
-        .Where(s => s.IdMovie == id)
-        .OrderBy(s => s.ShowtimeDateStart)
-        .ToList();
+            .Where(s => s.IdMovie == id && s.ShowtimeDateStart > now)
+            .OrderBy(s => s.ShowtimeDateStart)
+            .ToList();
 
             ViewBag.Movie = _context.Movies.FirstOrDefault(m => m.IdMovie == id);
             ViewBag.MovieId = id;
