@@ -1,13 +1,52 @@
-﻿@{
+﻿@model stellarCinema.Entities.Reservation
+
+@{
 	ViewData["Title"] = "Płatność";
+	var idReservation = ViewBag.IdReservation;
+	var seats = "A1";
 }
 
 <h3>Wybierz metodę płatności</h3>
 
-<input type="checkbox" name="blikMethod" id="blikMethod"/>
-<input type="checkbox" name="paypalMethod" id="paypalMethod"/>
+<button id="showBlik">Zapłać BLIK</button>
+<button id="showPaypal">Zapłać PayPal</button>
 
-<div class="blikDialog">
 
+<div id="blikDialog" class="dialog" style="display:none">
+	<h2>Płacę z <img style="width:60px;" src="/pictures/Blik_logo.jpg" /></h2>
+	<h3>Podaj 6 cyfrowy kod</h3>
+	<form asp-action="ConfirmBooking" method="post">
+		<input type="number" placeholder="kod blik" />
+		<input type="hidden" asp-for="IdReservation"/>
+		<input type="hidden" asp-for="Status" value="Confirmed"/>
+		<button type="submit">Zapłać</button>
+
+	</form>
+	<button onclick="closeDialog('blikDialog')">Anuluj</button>
 </div>
 
+<div id="paypalDialog" class="dialog" style="display:none">
+	<h2>Płacę z <img style="width:60px;" src="/pictures/Paypal_logo.png" /></h2>
+	<h3>Zaloguj się do swojego konta</h3>
+	<input type="email" placeholder="Wpisz swój email" />
+	<a asp-action="ConfirmBooking" asp-asp-controller="Reservations" asp-route-idReservation="@idReservation" asp-route-Seats="@seats" class="more">Zapłać</a>
+	<button onclick="closeDialog('paypalDialog')">Anuluj</button>
+</div>
+
+<script>
+
+	document.getElementById("showBlik").addEventListener("click", function() {
+		document.getElementById("blikDialog").style.display = "block";
+		document.getElementById("paypalDialog").style.display = "none";
+	});
+
+	document.getElementById("showPaypal").addEventListener("click", function() {
+		document.getElementById("paypalDialog").style.display = "block";
+		document.getElementById("blikDialog").style.display = "none";
+
+	});
+
+	function closeDialog(dialogId) {
+		document.getElementById(dialogId).style.display = "none";
+	}
+</script>

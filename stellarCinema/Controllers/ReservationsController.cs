@@ -52,9 +52,9 @@ namespace stellarCinema.Controllers
 
             _context.Reservations.Add(newReservation);
             await _context.SaveChangesAsync();
-           
 
-            return RedirectToAction(nameof(ConfirmBooking));
+
+            return RedirectToAction(nameof(ConfirmBooking), new { idReservation = newReservation.IdReservation });
         }
         public IActionResult GetSeatPrice()
         {
@@ -71,9 +71,66 @@ namespace stellarCinema.Controllers
                 .FirstOrDefault();
             return Json(seatId);
         }
-        public IActionResult ConfirmBooking()
+        public async Task<IActionResult> ConfirmBooking(int? idReservation)
         {
-            return RedirectToAction("Index", "Home");
+            if (idReservation == null)
+            {
+                return NotFound();
+            }
+
+            var reservation = await _context.Reservations
+                .FindAsync(idReservation);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+            return View(reservation);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmBooking(int idReservation, [Bind("Status")] Reservation reservation)
+        {
+
+            if (idReservation != reservation.IdReservation)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingReservation = await _context.Reservations.FindAsync(idReservation);
+
+                    if (existingReservation == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingReservation.Status = reservation.Status;
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ReservationExist(reservation.IdReservation))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction(nameof(ConfirmBooking), new { idReservation });
+
+        }
+
+        private bool ReservationExist(int id)
+        {
+            return _context.Reservations.Any(r => r.IdReservation == id);
         }
 
 

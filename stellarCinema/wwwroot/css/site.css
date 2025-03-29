@@ -10,6 +10,7 @@
     --highlight: #F77F00;
     --accent: #D62828;
     --border: #333;
+    --sand: #f4e1c1;
 }
 
 body {
@@ -470,4 +471,17 @@ button {
     justify-content: space-evenly;
     align-items: center;
     margin-top: 20px;
+}
+
+.dialog {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    background-color: var(--sand);
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    z-index: 1000;
 }
