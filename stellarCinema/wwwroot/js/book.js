@@ -1,8 +1,8 @@
 ﻿document.addEventListener("DOMContentLoaded", async function () {
 	const seatCheckboxes = document.querySelectorAll(".seat-checkbox");
 	const selectedSeatsSpan = document.getElementById("selectedSeats");
-    const selectedSeatsInput = document.getElementById("selectedSeatsData");
 	const totalPriceSpan = document.getElementById("totalPrice");
+    const hallId = document.getElementById("hallNumber").value;
 	let seatPrice = 0;
 
 	async function fetchSeatPrice() {
@@ -17,7 +17,7 @@
 	function updateSummary() {
 		let selectedSeats = [...seatCheckboxes].filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
 
-        selectedSeatsInput.value = selectedSeats.join(",");
+        selectedSeatsSpan.value = selectedSeats.join(",");
 		selectedSeatsSpan.textContent = selectedSeats.length > 0 ? selectedSeats.join(", ") : "Brak";
 		totalPriceSpan.textContent = (selectedSeats.length * seatPrice).toFixed(2) + " zł";
 	}

@@ -3,21 +3,11 @@
 }
 
 <h3>Wybierz metodę płatności</h3>
-<button onclick="simulatePayment('blik')">BLIK</button>
-<button onclick="simulatePayment('paypal')">PayPal</button>
 
-<script>
-    function simulatePayment(method) {
-        if (method === 'blik') {
-            let blikCode = prompt("Wprowadź 6-cyfrowy kod BLIK:");
-            if (/^\d{6}$/.test(blikCode)) {
-                alert("Płatność BLIK zakończona sukcesem!");
-            } else {
-                alert("Błąd: Niepoprawny kod BLIK.");
-            }
-        } else if (method === 'paypal') {
-            alert("Przekierowanie do symulowanej strony PayPal...");
-            setTimeout(() => alert("Płatność PayPal zakończona sukcesem!"), 2000);
-        }
-    }
-</script>
+<input type="checkbox" name="blikMethod" id="blikMethod"/>
+<input type="checkbox" name="paypalMethod" id="paypalMethod"/>
+
+<div class="blikDialog">
+
+</div>
+

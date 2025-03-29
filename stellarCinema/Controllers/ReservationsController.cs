@@ -28,23 +28,33 @@ namespace stellarCinema.Controllers
 
             if (showtime == null) return NotFound();
 
-            
+            var seats = _context.Seats.Where(s => s.IdHall == showtime.IdHall).ToList();
+
+            ViewBag.Seats = seats;
 
             return View(showtime);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> FinalizeReservation(int idShowtime, string selectedSeats)
+        public async Task<IActionResult> Book(int IdShowtime, string Email)
         {
-            if (string.IsNullOrEmpty(selectedSeats))
+            var now = DateTime.Now;
+            string status = "Pending";
+
+            Reservation newReservation = new Reservation
             {
-                return RedirectToAction("Index"); 
-            }
+                IdShowtime = IdShowtime,
+                Email = Email,
+                ReservationDate = now,
+                Status = status
+            };
 
-            
+            _context.Reservations.Add(newReservation);
+            await _context.SaveChangesAsync();
+           
 
-            return View();
+            return RedirectToAction(nameof(ConfirmBooking));
         }
         public IActionResult GetSeatPrice()
         {
@@ -52,9 +62,18 @@ namespace stellarCinema.Controllers
 
             return Json(seatPrice);
         }
+
+        public IActionResult GetSeatId(string seatNumber, int idHall)
+        {
+            var seatId = _context.Seats
+                .Where(s => s.SeatNumber == seatNumber && s.IdHall == idHall)
+                .Select(s => s.IdSeat)
+                .FirstOrDefault();
+            return Json(seatId);
+        }
         public IActionResult ConfirmBooking()
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
 
