@@ -22,39 +22,93 @@ namespace stellarCinema.Controllers
         {
 
             var showtime = _context.Showtimes
-                .Include(s => s.Movie)
-                .Include(s => s.Hall)
-                .FirstOrDefault(s => s.IdShowtime == id);
+            .Include(s => s.Movie)
+            .Include(s => s.Hall)
+            .Where(s => s.IdShowtime == id)
+            .FirstOrDefault();
 
             if (showtime == null) return NotFound();
 
-            var seats = _context.Seats.Where(s => s.IdHall == showtime.IdHall).ToList();
 
-            ViewBag.Seats = seats;
+            var bookingViewModel = new BookingViewModel
+            {
+                Showtime = showtime,
+                IdShowtime = showtime.IdShowtime,
+                TotalSeats = showtime.Hall.TotalSeats,
+                IdHall = showtime.IdHall
+            };
 
-            return View(showtime);
+            return View(bookingViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Book(int IdShowtime, string Email)
+        public async Task<IActionResult> Book([Bind("IdShowtime, IdReservation,Email, IdHall, TotalSeats, IdPayment, TotalPrice")]BookingViewModel bookingView)
         {
             var now = DateTime.Now;
             string status = "Pending";
 
+            var totalAmount = Convert.ToDecimal(bookingView.TotalPrice);
+
+
             Reservation newReservation = new Reservation
             {
-                IdShowtime = IdShowtime,
-                Email = Email,
+                IdShowtime = bookingView.IdShowtime,
+                Email = bookingView.Email,
                 ReservationDate = now,
                 Status = status
             };
 
             _context.Reservations.Add(newReservation);
             await _context.SaveChangesAsync();
-           
 
-            return RedirectToAction(nameof(ConfirmBooking));
+            return RedirectToAction(nameof(ConfirmBooking), new { idReservation = newReservation.IdReservation, totalAmount });
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmBooking(int idReservation, decimal totalAmount)
+        {
+            var reservation = _context.Reservations
+            .Include(x => x.Showtime)
+            .Where(s => s.IdReservation == idReservation)
+            .FirstOrDefault();
+
+            if (reservation == null) return NotFound();
+
+
+            var bookingViewModel = new BookingViewModel
+            {
+                Reservation = reservation,
+                TotalPrice = totalAmount
+            };
+
+            return View(bookingViewModel);
+           
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmBooking([Bind("IdShowtime, IdReservation,Email, IdHall, TotalSeats, IdPayment, TotalPrice")] BookingViewModel bookingView)
+        {
+            var now = DateTime.Now;
+            Payment newPayment = new Payment
+            {
+                IdReservation = bookingView.IdReservation,
+                PaymentDate = now,
+                Amount = bookingView.TotalPrice,
+                Status = "Confirmed"
+            };
+
+            var existingReservation = await _context.Reservations.FindAsync(bookingView.IdReservation);
+            if(existingReservation == null)
+            {
+                return NotFound();
+            }
+            existingReservation.Status = "Confirmed";
+
+            _context.Payments.Add(newPayment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult GetSeatPrice()
         {
@@ -71,9 +125,11 @@ namespace stellarCinema.Controllers
                 .FirstOrDefault();
             return Json(seatId);
         }
-        public IActionResult ConfirmBooking()
+        
+      
+        private bool ReservationExist(int id)
         {
-            return RedirectToAction("Index", "Home");
+            return _context.Reservations.Any(r => r.IdReservation == id);
         }
 
 
