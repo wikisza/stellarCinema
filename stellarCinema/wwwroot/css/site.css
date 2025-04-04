@@ -485,3 +485,10 @@ button {
     border-radius: 10px;
     z-index: 1000;
 }
+
+.paymentSummary {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}

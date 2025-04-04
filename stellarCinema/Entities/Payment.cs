@@ -15,5 +15,7 @@ namespace stellarCinema.Entities
         public decimal Amount { get; set; }
         [MaxLength(30)]
         public string Status { get; set; }
+
+        
     }
 }
