@@ -2,13 +2,16 @@
 
 @{
 
+
+
 	ViewData["Title"] = "Rezerwacja";
 
 	var totalSeats = Model.TotalSeats;
 	var hallId = Model.IdHall;
 	var seatsPerRow = 10;
 	var rowLabels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	var totalRows = totalSeats / seatsPerRow;
+	var totalRows = (int)Math.Ceiling((double)totalSeats / seatsPerRow);
+	var seatStart = 1;
 }
 
 <div class="bookInformations">
@@ -18,18 +21,27 @@
 		<span class="screen">Ekran</span>
 		<div class="seatsContainer">
 			<input type="hidden" id="hallNumber" value="@hallId"/>
+			<input type="hidden" id="showtimeId" value="@Model.Showtime.IdShowtime" />
+
 			@for (int row = 0; row < totalRows; row++)
 			{
-				<div class="seat-row">
+				<div class="seat-row @(row == totalRows - 1 && totalSeats % seatsPerRow != 0 ? "center" : "")">
 					<strong>@rowLabels[row]</strong>
 					@for (int seat = 1; seat <= seatsPerRow; seat++)
+
 					{
+
 						int seatNumber = row * seatsPerRow + seat;
+
 						if (seatNumber > totalSeats) break;
+
 						<label class="seatLabel">
-							<input type="checkbox" name="selectedSeats" value="@seatNumber" class="seat-checkbox" />
+							<input type="checkbox" name="selectedSeats" value="@seatStart" class="seat-checkbox" />
+							
 							<span class="seat">@rowLabels[row]@seat</span>
+							
 						</label>
+						seatStart++;
 					}
 				</div>
 			}
@@ -46,6 +58,9 @@
 			<input type="hidden" id="hiddenPrice" asp-for="TotalPrice" />
 			<input type="email" required asp-for="Email" placeholder="Adres e-mail" />
 			<input type="hidden" asp-for="IdShowtime" value="@Model.Showtime.IdShowtime" />
+
+			<input type="hidden" asp-for="SeatsList"  id="seatsList"/>
+
 
 			<button type="submit">Zarezerwuj</button>
 		</form>

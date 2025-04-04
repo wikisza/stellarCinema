@@ -17,5 +17,6 @@ namespace stellarCinema.Entities
         public DateTime ShowtimeDateEnd { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        public ICollection<ReservationSeat> ReservationSeats { get; set; } = new List<ReservationSeat>();
     }
 }

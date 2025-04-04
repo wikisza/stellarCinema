@@ -7,6 +7,8 @@
         public Reservation? Reservation { get; set; }
         public int IdSeat { get; set; }
         public Seat? Seat { get; set; }
+        public int IdShowtime { get; set; }
+        public Showtime? Showtime { get; set; }
 
     }
 }

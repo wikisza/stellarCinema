@@ -49,6 +49,11 @@ namespace stellarCinema.Entities
                 .WithMany(s => s.ReservationSeats)
                 .HasForeignKey(rs => rs.IdSeat);
 
+            modelBuilder.Entity<ReservationSeat>()
+                .HasOne(rs => rs.Showtime)
+                .WithMany(s => s.ReservationSeats)
+                .HasForeignKey(rs => rs.IdShowtime);
+
             modelBuilder.Entity<Reservation>()
                 .HasOne(r => r.Showtime)
                 .WithMany(s => s.Reservations)

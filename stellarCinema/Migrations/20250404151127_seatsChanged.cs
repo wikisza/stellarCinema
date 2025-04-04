@@ -1,0 +1,59 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace stellarCinema.Migrations
+{
+    /// <inheritdoc />
+    public partial class seatsChanged : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<int>(
+                name: "IdShowtime",
+                table: "ReservationSeats",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "ShowtimeIdShowtime",
+                table: "ReservationSeats",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReservationSeats_ShowtimeIdShowtime",
+                table: "ReservationSeats",
+                column: "ShowtimeIdShowtime");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ReservationSeats_Showtimes_ShowtimeIdShowtime",
+                table: "ReservationSeats",
+                column: "ShowtimeIdShowtime",
+                principalTable: "Showtimes",
+                principalColumn: "IdShowtime");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_ReservationSeats_Showtimes_ShowtimeIdShowtime",
+                table: "ReservationSeats");
+
+            migrationBuilder.DropIndex(
+                name: "IX_ReservationSeats_ShowtimeIdShowtime",
+                table: "ReservationSeats");
+
+            migrationBuilder.DropColumn(
+                name: "IdShowtime",
+                table: "ReservationSeats");
+
+            migrationBuilder.DropColumn(
+                name: "ShowtimeIdShowtime",
+                table: "ReservationSeats");
+        }
+    }
+}
