@@ -41,8 +41,16 @@
 		<div id="paypalDialog" class="dialog" style="display:none">
 			<h2>Płacę z <img style="width:60px;" src="/pictures/Paypal_logo.png" /></h2>
 			<h3>Zaloguj się do swojego konta</h3>
-			<input type="email" placeholder="Wpisz swój email" />
-			<a asp-action="ConfirmBooking" asp-asp-controller="Reservations" asp-route-idReservation="@Model.IdReservation"  class="more">Zapłać</a>
+			<form asp-action="ConfirmBooking" method="post">
+				<input type="email" required placeholder="Email" />
+				<input type="hidden" asp-for="IdReservation" value="@Model.Reservation.IdReservation" />
+				<input type="hidden" asp-for="Email" value="@Model.Reservation.Email" />
+				<input type="hidden" asp-for="IdShowtime" value="@Model.Reservation.IdShowtime" />
+				<input type="hidden" asp-for="Reservation.ReservationDate" value="@Model.Reservation.ReservationDate" />
+				<input type="hidden" asp-for="TotalPrice" value="@Model.TotalPrice" />
+				<button type="submit">Zapłać</button>
+
+			</form>
 			<button onclick="closeDialog('paypalDialog')">Anuluj</button>
 		</div>
 

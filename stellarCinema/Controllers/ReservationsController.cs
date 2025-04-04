@@ -43,7 +43,7 @@ namespace stellarCinema.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Book([Bind("IdShowtime, IdReservation,Email, IdHall, TotalSeats, IdPayment, TotalPrice")]BookingViewModel bookingView)
+        public async Task<IActionResult> Book([Bind("IdShowtime, IdReservation,Email, IdHall, TotalSeats, IdPayment, TotalPrice, SeatsList")] BookingViewModel bookingView)
         {
             var now = DateTime.Now;
             string status = "Pending";
@@ -61,6 +61,21 @@ namespace stellarCinema.Controllers
 
             _context.Reservations.Add(newReservation);
             await _context.SaveChangesAsync();
+            string[] strings = bookingView.SeatsList.Split(",");
+
+            foreach (string seatId in strings)
+            {
+
+                ReservationSeat newReservationSeat = new ReservationSeat
+                {
+                    IdShowtime = bookingView.IdShowtime,
+                    IdReservation = newReservation.IdReservation,
+                    IdSeat = Int32.Parse(seatId)
+                };
+                _context.ReservationSeats.Add(newReservationSeat);
+                await _context.SaveChangesAsync();
+            };
+
 
             return RedirectToAction(nameof(ConfirmBooking), new { idReservation = newReservation.IdReservation, totalAmount });
 
@@ -84,7 +99,7 @@ namespace stellarCinema.Controllers
             };
 
             return View(bookingViewModel);
-           
+
         }
 
         [HttpPost]
@@ -100,7 +115,7 @@ namespace stellarCinema.Controllers
             };
 
             var existingReservation = await _context.Reservations.FindAsync(bookingView.IdReservation);
-            if(existingReservation == null)
+            if (existingReservation == null)
             {
                 return NotFound();
             }
@@ -125,8 +140,16 @@ namespace stellarCinema.Controllers
                 .FirstOrDefault();
             return Json(seatId);
         }
-        
-      
+
+        public IActionResult GetTakenSeats(int IdShowtime)
+        {
+            var SeatsId = _context.ReservationSeats
+                .Where(s => s.IdShowtime == IdShowtime)
+                .Select(s => s.IdSeat)
+                .ToList();
+            return Json(SeatsId);
+        }
+
         private bool ReservationExist(int id)
         {
             return _context.Reservations.Any(r => r.IdReservation == id);

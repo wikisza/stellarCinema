@@ -433,6 +433,12 @@ button {
     gap: 10px;
 }
 
+.seat-row.center {
+    justify-content: center;
+}
+
+
+
 .seatLabel {
     position: relative;
     display: inline-block;
@@ -464,6 +470,11 @@ button {
 .seat-checkbox:checked + .seat,
 .seat.selected {
     background-color: green;
+}
+
+.seat.taken {
+    background-color: #613425;
+    cursor: not-allowed;
 }
 
 .bookInformations {

@@ -15,7 +15,8 @@ namespace stellarCinema.Models
         public int IdPayment { get; set; }
         public Payment? Payment { get; set; }
         public decimal TotalPrice { get; set; }
+        public string SeatsList { get; set; }
         
-        
+        public ReservationSeat? ReservationSeat { get; set; }
     }
 }

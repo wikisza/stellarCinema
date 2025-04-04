@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using stellarCinema.Entities;
 
@@ -11,9 +12,11 @@ using stellarCinema.Entities;
 namespace stellarCinema.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250404151127_seatsChanged")]
+    partial class seatsChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,13 +186,16 @@ namespace stellarCinema.Migrations
                     b.Property<int>("IdShowtime")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ShowtimeIdShowtime")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdReservation");
 
                     b.HasIndex("IdSeat");
 
-                    b.HasIndex("IdShowtime");
+                    b.HasIndex("ShowtimeIdShowtime");
 
                     b.ToTable("ReservationSeats");
                 });
@@ -328,10 +334,8 @@ namespace stellarCinema.Migrations
                         .IsRequired();
 
                     b.HasOne("stellarCinema.Entities.Showtime", "Showtime")
-                        .WithMany("ReservationSeats")
-                        .HasForeignKey("IdShowtime")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ShowtimeIdShowtime");
 
                     b.Navigation("Reservation");
 
@@ -396,8 +400,6 @@ namespace stellarCinema.Migrations
 
             modelBuilder.Entity("stellarCinema.Entities.Showtime", b =>
                 {
-                    b.Navigation("ReservationSeats");
-
                     b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
