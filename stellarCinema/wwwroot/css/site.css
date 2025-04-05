@@ -49,6 +49,8 @@ header {
     background: linear-gradient(90deg, rgba(5,4,23,1) 0%, rgba(31,31,108,1) 33%, rgba(16,166,197,1) 100%);
     padding-bottom: 5px;
 }
+
+
 .headerMain {
     padding:1rem;
     display: flex;
@@ -130,10 +132,14 @@ nav a {
 
 .prev {
     left: 10px;
+    position: relative; 
+    z-index: 10;
 }
 
 .next {
     right: 10px;
+    position: relative; 
+    z-index: 10;
 }
 
 .movie-photo{

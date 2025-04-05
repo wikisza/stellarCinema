@@ -6,6 +6,8 @@
 	<title>@ViewData["Title"] - Stellar Cinema</title>
 	@* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/styleLogin.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/customerView.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/stellarCinema.styles.css" asp-append-version="true" />
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
 </head>
@@ -26,6 +28,10 @@
 			@if (User.IsInRole("recepcionist"))
 			{
 				<a asp-area="" asp-controller="Home" asp-action="EmployeePanel">Panel pracownika</a>
+			}
+			@if (User.IsInRole("customer"))
+			{
+				<a asp-area="" asp-controller="Home" asp-action="CustomerView">Twoje konto</a>
 			}
 			@if (Context.User.Identity.Name == "admin")
 			{
