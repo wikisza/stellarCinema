@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using stellarCinema.Entities;
+using stellarCinema.Services;
+using stellarCinema.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ApplicationContext>();
@@ -9,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-
+builder.Services.AddScoped<IReservationService, ReservationService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;

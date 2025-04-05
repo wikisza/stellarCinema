@@ -1,0 +1,13 @@
+﻿@model stellarCinema.Models.BookingViewModel
+
+<h2>
+	Rezerwacja zakończona pomyślnie!
+</h2>
+
+<a asp-action="Download"
+   asp-route-IdReservation="@Model.IdReservation"
+   asp-route-TotalPrice="@Model.TotalPrice"
+   target="_blank"
+   class="more">
+	Pobierz / Wydrukuj bilet
+</a>

@@ -1,0 +1,101 @@
+﻿@model stellarCinema.Models.UserReservationViewModel.UserReservationsViewModel
+
+@{
+	ViewData["Title"] = "Moje Rezerwacje";
+}
+
+<h1>Moje Rezerwacje</h1>
+
+<div class="boxCustomerView">
+	<section class="current-reservations">
+		<h2>Aktualne Rezerwacje</h2>
+		@if (Model.CurrentReservations.Any())
+		{
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Email</th>
+						<th>Data seansu</th>
+						<th>Film</th>
+						<th>Data Rezerwacji</th>
+						<th>Miejsca</th>
+						<th>Wydrukuj bilet</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var reservation in Model.CurrentReservations)
+					{
+						<tr>
+							<td>@reservation.Email</td>
+							<td>@reservation.ShowtimeDate.ToString("yyyy-MM-dd HH:mm")</td>
+							<td>@reservation.MovieTitle</td>
+							<td>@reservation.ReservationDate.ToString("yyyy-MM-dd HH:mm")</td>
+
+							@foreach (var seat in reservation.SeatsList)
+							{
+								<td>@seat </td>
+							}
+							<td>
+								<form asp-action="Download" asp-controller="Reservations" method="post" target="_blank">
+									<input type="hidden" name="IdReservation" value="@reservation.IdReservation" />
+									<input type="hidden" name="TotalPrice" value="@reservation.TotalPrice" />
+									<button type="submit" class="more" >Pobierz</button>
+								</form>
+							</td>
+						</tr>
+
+
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p>Nie masz żadnych aktywnych rezerwacji.</p>
+		}
+	</section>
+
+	<hr />
+
+	<section class="reservation-history">
+		<h2>Historia Rezerwacji</h2>
+		@if (Model.HistoryReservations.Any())
+		{
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Email</th>
+						<th>Data seansu</th>
+						<th>Film</th>
+						<th>Data Rezerwacji</th>
+						<th>Miejsca</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var reservation in Model.CurrentReservations)
+					{
+						<tr>
+							<td>@reservation.Email</td>
+							<td>@reservation.ShowtimeDate.ToString("yyyy-MM-dd HH:mm")</td>
+							<td>@reservation.MovieTitle</td>
+							<td>@reservation.ReservationDate.ToString("yyyy-MM-dd HH:mm")</td>
+
+							@foreach (var seat in reservation.SeatsList)
+							{
+								<td>@seat </td>
+							}
+						</tr>
+
+
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p>Nie masz jeszcze żadnej historii rezerwacji.</p>
+		}
+	</section>
+</div>
+
+

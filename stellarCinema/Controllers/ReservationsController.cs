@@ -124,8 +124,19 @@ namespace stellarCinema.Controllers
             _context.Payments.Add(newPayment);
             await _context.SaveChangesAsync();
 
+            
+            return RedirectToAction("FinalView", bookingView);
+        }
+
+        public IActionResult FinalView(BookingViewModel bookingView)
+        {
+            return View(bookingView);
+        }
+
+        public async Task<IActionResult> Download(int IdReservation, decimal TotalPrice)
+        {
             var thisReservation = _context.Reservations
-                .FirstOrDefault(r => r.IdReservation == bookingView.IdReservation);
+                .FirstOrDefault(r => r.IdReservation == IdReservation);
 
             if (thisReservation == null)
             {
@@ -142,17 +153,15 @@ namespace stellarCinema.Controllers
             }
 
             var seats = _context.ReservationSeats
-            .Where(r => r.IdReservation == thisReservation.IdReservation)
-            .Include(r => r.Seat)
-            .Select(r => r.Seat.SeatNumber) 
-            .ToArray();
+                .Where(r => r.IdReservation == thisReservation.IdReservation && r.IdShowtime == thisReservation.IdShowtime)
+                .Include(r => r.Seat)
+                .Select(r => r.Seat.SeatNumber)
+                .ToArray();
 
 
-
-            DownloadTicket(movie.Movie.Title, movie.ShowtimeDateStart, bookingView.TotalPrice, seats);
-
-            return RedirectToAction("Index", "Home");
+            return DownloadTicket(movie.Movie.Title, movie.ShowtimeDateStart, TotalPrice, seats);
         }
+
 
         public IActionResult DownloadTicket(string movieTitle, DateTime movieDate, decimal Price, string[] Seats)
         {

@@ -1,0 +1,80 @@
+﻿.row{
+    display:flex;
+    justify-content:center;
+    margin:1.5rem;
+}
+
+.row form {
+    background-color: var(--cardBackground);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+    margin-bottom:2rem;
+}
+.loginView a{
+    color:lightblue;
+    font-size:1rem;
+}
+
+h1 {
+    font-family: var(--headerFont);
+    font-size: 2.5rem;
+    color: var(--highlight);
+    margin-bottom: 20px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: var(--border);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 1rem;
+    color: var(--primaryText);
+    margin-bottom: 5px;
+    display: block;
+}
+
+input.form-control {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--cardBackground);
+    border: 1px solid var(--border);
+    color: var(--primaryText);
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input.form-control:focus {
+    outline: none;
+    border-color: var(--highlight);
+}
+
+span.text-danger {
+    font-size: 0.875rem;
+    color: var(--accent);
+}
+
+input[type="submit"] {
+    background-color: var(--highlight);
+    color: var(--primaryText);
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: var(--accent);
+}
