@@ -12,6 +12,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
 
 var app = builder.Build();
 
