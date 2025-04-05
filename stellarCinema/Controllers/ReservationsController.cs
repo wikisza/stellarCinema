@@ -95,7 +95,7 @@ namespace stellarCinema.Controllers
             var bookingViewModel = new BookingViewModel
             {
                 Reservation = reservation,
-                TotalPrice = totalAmount
+                TotalPrice = totalAmount,
             };
 
             return View(bookingViewModel);
@@ -123,8 +123,47 @@ namespace stellarCinema.Controllers
 
             _context.Payments.Add(newPayment);
             await _context.SaveChangesAsync();
+
+            var thisReservation = _context.Reservations
+                .FirstOrDefault(r => r.IdReservation == bookingView.IdReservation);
+
+            if (thisReservation == null)
+            {
+                return NotFound();
+            }
+
+            var movie = await _context.Showtimes
+                .Include(r => r.Movie)
+                .FirstOrDefaultAsync(r => r.IdShowtime == thisReservation.IdShowtime);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            var seats = _context.ReservationSeats
+            .Where(r => r.IdReservation == thisReservation.IdReservation)
+            .Include(r => r.Seat)
+            .Select(r => r.Seat.SeatNumber) 
+            .ToArray();
+
+
+
+            DownloadTicket(movie.Movie.Title, movie.ShowtimeDateStart, bookingView.TotalPrice, seats);
+
             return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult DownloadTicket(string movieTitle, DateTime movieDate, decimal Price, string[] Seats)
+        {
+
+            var filePath = Path.Combine(Path.GetTempPath(), "bilet.pdf");
+            PdfGenerator.GenerateTicket(movieTitle, movieDate, Price, Seats, filePath);
+
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, "application/pdf", "bilet.pdf");
+        }
+
         public IActionResult GetSeatPrice()
         {
             var seatPrice = _context.Configurations.Where(s => s.Id == 1).Select(s => s.KeyValue).FirstOrDefault();
