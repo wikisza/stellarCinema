@@ -14,21 +14,7 @@ namespace stellarCinema.Services
             _context = context;
         }
         public List<UserReservationViewModel.ReservationViewModel> GetCurrentReservationsForUser(string email)
-        {
-            var IdRes = _context.Reservations
-                .Where(r => r.Email == email)
-                .Select(r => r.IdReservation)
-                .FirstOrDefault();
-
-            var SeatsList = _context.ReservationSeats
-                .Where(r => r.IdReservation == IdRes)
-                .Select(rs => rs.Seat.SeatNumber) 
-                .ToArray();
-
-            var TotalPrice = _context.Payments
-                .Where(p => p.IdReservation == IdRes)
-                .Select(p => p.Amount)
-                .FirstOrDefault();
+        { 
 
             var model = _context.Reservations
                 .Where(r => r.Email == email && r.ReservationDate >= DateTime.Now)
@@ -41,30 +27,24 @@ namespace stellarCinema.Services
                     ReservationDate = r.ReservationDate,
                     MovieTitle = r.Showtime.Movie.Title,
                     ShowtimeDate = r.Showtime.ShowtimeDateStart,
-                    SeatsList = SeatsList,
-                    TotalPrice = TotalPrice
-                }).ToList();
+
+                    SeatsList = _context.ReservationSeats
+                        .Where(rs => rs.IdReservation == r.IdReservation)
+                        .Select(rs => rs.Seat.SeatNumber)
+                        .ToArray(),
+
+                    TotalPrice = _context.Payments
+                        .Where(p => p.IdReservation == r.IdReservation)
+                        .Select(p => p.Amount)
+                        .FirstOrDefault()
+
+                    }).ToList();
 
             return model;
         }
 
         public List<UserReservationViewModel.ReservationViewModel> GetHistoryReservationsForUser(string email)
         {
-            var IdRes = _context.Reservations
-                .Where(r => r.Email == email)
-                .Select(r => r.IdReservation)
-                .FirstOrDefault();
-
-            var SeatsList = _context.ReservationSeats
-                .Where(r => r.IdReservation == IdRes)
-                .Select(rs => rs.Seat.SeatNumber)
-                .ToArray();
-
-            var TotalPrice = _context.Payments
-                .Where(p => p.IdReservation == IdRes)
-                .Select(p => p.Amount)
-                .FirstOrDefault();
-
             var model = _context.Reservations
                 .Where(r => r.Email == email && r.ReservationDate < DateTime.Now)
                 .Select(r => new UserReservationViewModel.ReservationViewModel
@@ -75,8 +55,17 @@ namespace stellarCinema.Services
                     ReservationDate = r.ReservationDate,
                     MovieTitle = r.Showtime.Movie.Title,
                     ShowtimeDate = r.Showtime.ShowtimeDateStart,
-                    SeatsList = SeatsList,
-                    TotalPrice = TotalPrice
+
+                    SeatsList = _context.ReservationSeats
+                        .Where(rs => rs.IdReservation == r.IdReservation)
+                        .Select(rs => rs.Seat.SeatNumber)
+                        .ToArray(),
+
+                    TotalPrice = _context.Payments
+                        .Where(p => p.IdReservation == r.IdReservation)
+                        .Select(p => p.Amount)
+                        .FirstOrDefault()
+
                 }).ToList();
 
             return model;
