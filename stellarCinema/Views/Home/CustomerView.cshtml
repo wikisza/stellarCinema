@@ -19,6 +19,7 @@
 						<th>Film</th>
 						<th>Data Rezerwacji</th>
 						<th>Miejsca</th>
+						<th>Kwota</th>
 						<th>Wydrukuj bilet</th>
 					</tr>
 				</thead>
@@ -27,19 +28,18 @@
 					{
 						<tr>
 							<td>@reservation.Email</td>
-							<td>@reservation.ShowtimeDate.ToString("yyyy-MM-dd HH:mm")</td>
+							<td>@reservation.ShowtimeDate.ToString("dd.MM.yyyy HH:mm")</td>
 							<td>@reservation.MovieTitle</td>
-							<td>@reservation.ReservationDate.ToString("yyyy-MM-dd HH:mm")</td>
-
-							@foreach (var seat in reservation.SeatsList)
-							{
-								<td>@seat </td>
-							}
+							<td>@reservation.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
+							<td>
+								@string.Join(", ", reservation.SeatsList)
+							</td>
+                            <td>@reservation.TotalPrice zł</td>
 							<td>
 								<form asp-action="Download" asp-controller="Reservations" method="post" target="_blank">
 									<input type="hidden" name="IdReservation" value="@reservation.IdReservation" />
 									<input type="hidden" name="TotalPrice" value="@reservation.TotalPrice" />
-									<button type="submit" class="more" >Pobierz</button>
+									<button type="submit" class="more">Pobierz</button>
 								</form>
 							</td>
 						</tr>
@@ -69,21 +69,29 @@
 						<th>Film</th>
 						<th>Data Rezerwacji</th>
 						<th>Miejsca</th>
+						<th>Kwota</th>
+						<th>Wydrukuj bilet</th>
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (var reservation in Model.CurrentReservations)
+					@foreach (var reservation in Model.HistoryReservations)
 					{
 						<tr>
 							<td>@reservation.Email</td>
-							<td>@reservation.ShowtimeDate.ToString("yyyy-MM-dd HH:mm")</td>
+							<td>@reservation.ShowtimeDate.ToString("dd.MM.yyyy HH:mm")</td>
 							<td>@reservation.MovieTitle</td>
-							<td>@reservation.ReservationDate.ToString("yyyy-MM-dd HH:mm")</td>
-
-							@foreach (var seat in reservation.SeatsList)
-							{
-								<td>@seat </td>
-							}
+							<td>@reservation.ReservationDate.ToString("dd.MM.yyyy HH:mm")</td>
+							<td>
+								@string.Join(", ", reservation.SeatsList)
+							</td>
+							<td>@reservation.TotalPrice zł</td>
+							<td>
+								<form asp-action="Download" asp-controller="Reservations" method="post" target="_blank">
+									<input type="hidden" name="IdReservation" value="@reservation.IdReservation" />
+									<input type="hidden" name="TotalPrice" value="@reservation.TotalPrice" />
+									<button type="submit" class="more">Pobierz</button>
+								</form>
+							</td>
 						</tr>
 
 

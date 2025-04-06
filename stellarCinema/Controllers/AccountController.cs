@@ -252,7 +252,7 @@ namespace stellarCinema.Controllers
                     return View(model);
                 }
 
-                // Logowanie powiodło się
+         
                 var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.FirstName),
