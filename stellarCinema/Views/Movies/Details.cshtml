@@ -26,8 +26,8 @@
                     <li><strong>Data premiery:</strong> @Model.ReleaseDate.ToShortDateString()</li>
                 </ul>
                 <div class="buttons mt-4">
-                    <a href="@Model.MovieLink" class="buy" target="_blank">Zobacz na Filmweb</a>
-                    <a asp-action="Index" asp-controller="Home" class="more">Wróć do strony głównej</a>
+                    <a asp-action="AvailableMovieHours" asp-controller="Movies" asp-route-id="@Model.IdMovie" class="buy">Kup bilet</a>
+                    <a href="@Model.MovieLink" class="more" target="_blank">Zobacz na Filmweb</a>
                 </div>
             </div>
         </div>

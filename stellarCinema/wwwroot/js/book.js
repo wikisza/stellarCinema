@@ -3,6 +3,7 @@
     const selectedSeatsSpan = document.getElementById("selectedSeats");
     const totalPriceSpan = document.getElementById("totalPrice");
     const hiddenPriceInput = document.getElementById("hiddenPrice");
+    const submitButton = document.getElementById("submitButton");
     const showtimeId = document.getElementById("showtimeId").value;
     let seatsList = document.getElementById("seatsList");
     let seatPrice = 0;
@@ -35,6 +36,12 @@
         hiddenPriceInput.value = total;
 
         seatsList.value = selectedIds.join(",");
+
+        if (selectedSeats.length <= 0) {
+            submitButton.disabled = true;
+        } else {
+            submitButton.disabled = false;
+        }
     }
 
     async function fetchTakenSeats(showtimeId) {
@@ -58,6 +65,8 @@
     await fetchSeatPrice();
     await fetchTakenSeats(showtimeId);
     await fetchSeatPrice();
+
+    updateSummary();
 
     seatCheckboxes.forEach(checkbox => {
         checkbox.addEventListener("change", updateSummary);
