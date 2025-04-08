@@ -14,13 +14,13 @@
 	var seatStart = 1;
 }
 
+<h1>@Model.Showtime.Movie.Title</h1>
 <div class="bookInformations">
-
 	<div class="bookContainer">
-		<h2>Wybierz miejsca na film '@Model.Showtime.Movie.Title'</h2>
+		<h3>Wybierz miejsca</h3>
 		<span class="screen">Ekran</span>
 		<div class="seatsContainer">
-			<input type="hidden" id="hallNumber" value="@hallId"/>
+			<input type="hidden" id="hallNumber" value="@hallId" />
 			<input type="hidden" id="showtimeId" value="@Model.Showtime.IdShowtime" />
 
 			@for (int row = 0; row < totalRows; row++)
@@ -37,9 +37,9 @@
 
 						<label class="seatLabel">
 							<input type="checkbox" name="selectedSeats" value="@seatStart" class="seat-checkbox" />
-							
+
 							<span class="seat">@rowLabels[row]@seat</span>
-							
+
 						</label>
 						seatStart++;
 					}
@@ -50,22 +50,24 @@
 
 	<div class="receipt">
 		<form asp-action="Book" method="post">
-			<h2>Podsumowanie rezerwacji</h2>
-			<p>Film: @Model.Showtime.Movie.Title</p>
+			<h3>Podsumowanie rezerwacji</h3>
 			<p>Data: @Model.Showtime.ShowtimeDateStart.ToString("dd MMM yyyy HH:mm")</p>
 			<p>Miejsca: <span id="selectedSeats"></span></p>
 			<p>Cena: <span id="totalPrice"></span> </p>
-			<input type="hidden" id="hiddenPrice" asp-for="TotalPrice" />
-			<input type="email" required asp-for="Email" placeholder="Adres e-mail" />
-			<input type="hidden" asp-for="IdShowtime" value="@Model.Showtime.IdShowtime" />
+			<p>
 
-			<input type="hidden" asp-for="SeatsList"  id="seatsList"/>
+				<input type="hidden" id="hiddenPrice" asp-for="TotalPrice" />
+				<input type="email" required asp-for="Email" placeholder="Adres e-mail" />
+				<input type="hidden" asp-for="IdShowtime" value="@Model.Showtime.IdShowtime" />
 
-
-			<button type="submit">Zarezerwuj</button>
+				<input type="hidden" asp-for="SeatsList" id="seatsList" />
+			</p>
+			<p class="center">
+				<button class="button-primary" type="submit" id="submitButton">Zarezerwuj</button>
+			</p>
 		</form>
 	</div>
-	
+
 </div>
 
 

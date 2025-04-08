@@ -19,8 +19,7 @@
 			@foreach (var showtime in Model)
 			{
 				<div class="oneShowtimeDate">
-
-					<b>@showtime.ShowtimeDateStart.ToString("dd MMM yyyy HH:mm")</b>
+					<span class="movieDate">@showtime.ShowtimeDateStart.ToString("dd MMM yyyy HH:mm")</span>
 					<a asp-action="Book" asp-controller="Reservations" asp-route-id="@showtime.IdShowtime" class="buy">Rezerwuj</a>
 				</div>
 
