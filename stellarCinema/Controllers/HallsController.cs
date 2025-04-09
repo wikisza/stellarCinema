@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using stellarCinema.Entities;
 
@@ -62,5 +63,73 @@ namespace stellarCinema.Controllers
             _context.SaveChanges();
         }
 
+        [Authorize]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var hall = await _context.Halls
+                .FindAsync(id);
+
+            if (hall == null)
+            {
+                return NotFound();
+            }
+
+            return View(hall);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("IdHall,HallName, TotalSeats")] Hall hall)
+        {
+
+            if (id != hall.IdHall)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingHall = await _context.Halls.FindAsync(id);
+
+                    if (existingHall == null)
+                    {
+                        return NotFound();
+                    }
+                    existingHall.HallName = hall.HallName;
+                    existingHall.TotalSeats = hall.TotalSeats;
+
+
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!HallExist(hall.IdHall))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Edit), new { id });
+        }
+
+        private bool HallExist(int Id)
+        {
+            return _context.Halls.Any(e => e.IdHall == Id);
+        }
+
     }
+
 }
