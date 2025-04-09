@@ -54,6 +54,17 @@ input.form-control {
     font-size: 1rem;
 }
 
+textarea.form-control {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--cardBackground);
+    border: 1px solid var(--border);
+    color: var(--primaryText);
+    border-radius: 5px;
+    font-size: 1rem;
+    resize:none;
+}
+
 input.form-control:focus {
     outline: none;
     border-color: var(--highlight);

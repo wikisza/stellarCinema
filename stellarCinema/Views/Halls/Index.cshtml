@@ -1,22 +1,25 @@
 ﻿@model IEnumerable<stellarCinema.Entities.Hall>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Dostępne sale";
 }
 
-<h1>Index</h1>
+<h1>Dostępne sale</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="more">Dodaj nową sale</a>
+    <a asp-action="EmployeePanel" asp-controller="Home" class="more">Powrót</a>
 </p>
+<div class="boxCustomerView">
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.HallName)
+                Nazwa sali
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalSeats)
+                Ilość miejsc
             </th>
             <th></th>
         </tr>
@@ -31,11 +34,10 @@
                 @Html.DisplayFor(modelItem => item.TotalSeats)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdHall">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdHall">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdHall">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IdHall" class="more">Edytuj</a> 
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>

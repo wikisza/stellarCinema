@@ -1,15 +1,15 @@
 ﻿@model stellarCinema.Entities.Showtime
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Dodawanie filmu do repertuaru";
 }
 
-<h1>Create</h1>
+<h1>Dodawanie filmu do repertuaru</h1>
 
-<h4>Showtime</h4>
-<hr />
+<div>
+    <a asp-action="EmployeePanel" asp-controller="Home" class="more">Powrót</a>
+</div>
 <div class="row">
-    <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
@@ -19,7 +19,7 @@
             </div>
 
             <div class="form-group">
-                <select asp-for="IdHall" class="form-control" id="hallsFiller">
+                <select class="more" asp-for="IdHall" class="form-control" id="hallsFiller">
                     <option value="">Wybierz salę</option>
 					@foreach (var hall in ViewBag.Halls)
 					{
@@ -36,12 +36,8 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 
 @section Scripts {

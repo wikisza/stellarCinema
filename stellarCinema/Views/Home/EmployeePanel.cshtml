@@ -6,14 +6,14 @@
 <div class="employeeView">
 
 	<div class="basicInteraction">
-		<a asp-controller="Movies" asp-action="Create" class="more">Dodaj film</a>
-		<a asp-controller="Halls" asp-action="Create" class="more">Dodaj salę</a>
-		<a asp-controller="Halls" asp-action="Index" class="more">Pokaż sale</a>
+		<a asp-controller="Halls" asp-action="Create" class="more">Dodaj nową salę</a>
+		<a asp-controller="Halls" asp-action="Index" class="more">Pokaż listę sal</a>
 		<a asp-controller="Configurations" asp-action="Edit" asp-route-id="1" class="more">Edytuj cenę miejsca</a>
 
 	</div>
 
 	<div class="manageSection">
+		<a asp-controller="Movies" asp-action="Create" class="more">Dodaj nowy film</a>
 		<a asp-controller="Showtimes" asp-action="Create" class="more">Dodaj film do repertuaru</a>
 
 	</div>
